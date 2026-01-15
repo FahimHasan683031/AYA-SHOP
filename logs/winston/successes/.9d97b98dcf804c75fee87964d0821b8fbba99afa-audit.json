@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "D:\\Fahim\\Projects\\AYA-SHOP\\logs\\winston\\successes\\.9d97b98dcf804c75fee87964d0821b8fbba99afa-audit.json",
+    "files": [
+        {
+            "date": 1768504636401,
+            "name": "D:\\Fahim\\Projects\\AYA-SHOP\\logs\\winston\\successes\\sg-2026-01-16-01-success.log",
+            "hash": "2a9ab9b77aa46fd1ffdbd9a03f504d696282ab0d81d086742db24b9d0cc1bc4a"
+        }
+    ],
+    "hashType": "sha256"
+}

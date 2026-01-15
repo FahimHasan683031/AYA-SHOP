@@ -1,0 +1,8 @@
+{Fri Jan 16 2026 01:18:11} [APP 🚀] info: [32m🚀 Database connected successfully[39m
+{Fri Jan 16 2026 01:18:11} [APP 🚀] info: [32m🍁 Server connected successfully[39m
+{Fri Jan 16 2026 01:18:11} [APP 🚀] info: [33m♻️  Application listening on port:5005[39m
+{Fri Jan 16 2026 01:18:34} [APP 🚀] info: ::ffff:10.10.7.26 - GET / 200 - 6.849 ms
+{Fri Jan 16 2026 01:18:45} [APP 🚀] info: ::ffff:10.10.7.26 - GET / 304 - 0.721 ms
+{Fri Jan 16 2026 01:33:59} [APP 🚀] info: [32m🚀 Database connected successfully[39m
+{Fri Jan 16 2026 01:33:59} [APP 🚀] info: [32m🍁 Server connected successfully[39m
+{Fri Jan 16 2026 01:33:59} [APP 🚀] info: [33m♻️  Application listening on port:5005[39m
