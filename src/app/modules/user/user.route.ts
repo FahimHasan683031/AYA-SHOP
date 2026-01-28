@@ -8,13 +8,13 @@ const router = express.Router()
 
 router.get(
   '/me',
-  auth(USER_ROLES.USER, USER_ROLES.ADMIN),
+  auth(USER_ROLES.CLIENT, USER_ROLES.BUSINESS, USER_ROLES.ADMIN),
   UserController.getProfile,
 )
 router.get('/', auth(USER_ROLES.ADMIN), UserController.getAllUser);
 router.patch(
   '/profile',
-  auth(USER_ROLES.USER, USER_ROLES.ADMIN),
+  auth(USER_ROLES.CLIENT, USER_ROLES.BUSINESS, USER_ROLES.ADMIN),
   fileUploadHandler(),
   UserController.updateProfile,
 )
@@ -22,7 +22,7 @@ router.patch(
 // delete my account
 router.delete(
   '/me',
-  auth(USER_ROLES.USER, USER_ROLES.ADMIN),
+  auth(USER_ROLES.CLIENT, USER_ROLES.BUSINESS, USER_ROLES.ADMIN),
   UserController.deleteMyAccount,
 )
 

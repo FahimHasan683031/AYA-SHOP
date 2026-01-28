@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
-import { IUser, USER_STATUS, UserModel } from "./user.interface";
+import { IUser, USER_STATUS, USER_ROLES, UserModel } from "./user.interface";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../../../errors/ApiError";
 import config from "../../../config";
@@ -20,18 +20,14 @@ const UserSchema = new Schema(
             type: String,
             default: "",
         },
-        firstName: {
-            type: String,
-            required: true,
-        },
-        lastName: {
+        fullName: {
             type: String,
             required: true,
         },
         status: {
             type: String,
-            enum: ["active", "restricted", "deleted"],
-            default: "active",
+            enum: Object.values(USER_STATUS),
+            default: USER_STATUS.ACTIVE,
         },
         verified: {
             type: Boolean,
@@ -39,8 +35,8 @@ const UserSchema = new Schema(
         },
         role: {
             type: String,
-            enum: ["admin", "user"],
-            default: "user",
+            enum: Object.values(USER_ROLES),
+            default: USER_ROLES.CLIENT,
         },
         authentication: {
             restrictionLeftAt: {
@@ -93,10 +89,6 @@ const UserSchema = new Schema(
         },
     }
 );
-
-UserSchema.virtual('fullName').get(function () {
-    return `${this.firstName} ${this.lastName}`;
-});
 
 UserSchema.statics.isPasswordMatched = async function (
     givenPassword: string,

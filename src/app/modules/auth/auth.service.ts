@@ -65,7 +65,7 @@ export const createUser = async (payload: IUser) => {
     // 3. Send OTP email
     setTimeout(() => {
       const createAccountEmail = emailTemplate.createAccount({
-        name: `${payload.firstName} ${payload.lastName}`,
+        name: payload.fullName,
         email: payload.email,
         otp,
       })
@@ -79,7 +79,7 @@ export const createUser = async (payload: IUser) => {
           ...payload,
           password: payload.password,
           authentication,
-          role: payload.role || USER_ROLES.USER,
+          role: payload.role || USER_ROLES.CLIENT,
         },
       ],
       { session },
@@ -164,13 +164,13 @@ const adminLogin = async (payload: ILoginData): Promise<IAuthResponse> => {
   const tokens = AuthHelper.createToken(
     isUserExist._id,
     isUserExist.role,
-    `${isUserExist.firstName} ${isUserExist.lastName}`,
+    isUserExist.fullName,
     isUserExist.email,
   )
 
   return authResponse(
     StatusCodes.OK,
-    `Welcome back ${isUserExist.firstName}`,
+    `Welcome back ${isUserExist.fullName}`,
     isUserExist.role,
     tokens.accessToken,
     tokens.refreshToken,
@@ -217,7 +217,7 @@ const forgetPassword = async (email?: string, phone?: string) => {
   // Send OTP to user
   if (email) {
     const forgetPasswordEmailTemplate = emailTemplate.resetPassword({
-      name: `${isUserExist.firstName} ${isUserExist.lastName}`,
+      name: isUserExist.fullName,
       email: isUserExist.email,
       otp,
     })
@@ -351,20 +351,20 @@ const verifyAccount = async (
     const tokens = AuthHelper.createToken(
       isUserExist._id,
       isUserExist.role,
-      isUserExist.firstName + ' ' + isUserExist.lastName,
+      isUserExist.fullName,
       isUserExist.email,
     )
     const userInfo = {
       id: isUserExist._id,
       role: isUserExist.role,
-      name: `${isUserExist.firstName!} ${isUserExist.lastName!}`,
+      name: isUserExist.fullName,
       email: isUserExist.email!,
       image: isUserExist.image!,
     }
 
     return authResponse(
       StatusCodes.OK,
-      `Welcome ${isUserExist.firstName} ${isUserExist.lastName} to our platform.`,
+      `Welcome ${isUserExist.fullName} to our platform.`,
       undefined,
       tokens.accessToken,
       tokens.refreshToken,
@@ -488,7 +488,7 @@ const resendOtpToPhoneOrEmail = async (
   if (email) {
     const forgetPasswordEmailTemplate = emailTemplate.resendOtp({
       email: isUserExist.email,
-      name: `${isUserExist.firstName} ${isUserExist.lastName}`,
+      name: isUserExist.fullName,
       otp,
       type: authType,
     })
@@ -600,7 +600,7 @@ const resendOtp = async (
   if (email) {
     const forgetPasswordEmailTemplate = emailTemplate.resendOtp({
       email: email,
-      name: `${isUserExist.firstName} ${isUserExist.lastName}`,
+      name: isUserExist.fullName,
       otp,
       type: authType,
     })

@@ -12,7 +12,7 @@ import { emailHelper } from '../../../helpers/emailHelper'
 import bcrypt from "bcrypt";
 
 
-const handleLoginLogic = async (payload: ILoginData, isUserExist: IUser):Promise<IAuthResponse> => {
+const handleLoginLogic = async (payload: ILoginData, isUserExist: IUser): Promise<IAuthResponse> => {
   const { authentication, verified, status, password } = isUserExist
   const { restrictionLeftAt, wrongLoginAttempts } = authentication
 
@@ -36,8 +36,8 @@ const handleLoginLogic = async (payload: ILoginData, isUserExist: IUser):Promise
     })
 
     const otpTemplate = emailTemplate.createAccount({
-      name: `${isUserExist.firstName!} ${isUserExist.lastName!}`,
-      email: isUserExist.email!,   
+      name: isUserExist.fullName,
+      email: isUserExist.email!,
       otp,
     })
     setTimeout(() => {
@@ -126,24 +126,24 @@ const handleLoginLogic = async (payload: ILoginData, isUserExist: IUser):Promise
     { new: true },
   )
 
-  const tokens = AuthHelper.createToken(isUserExist._id, isUserExist.role, `${isUserExist.firstName!} ${isUserExist.lastName!}`, isUserExist.email)
-  const userInfo={
+  const tokens = AuthHelper.createToken(isUserExist._id, isUserExist.role, isUserExist.fullName, isUserExist.email)
+  const userInfo = {
     id: isUserExist._id,
     role: isUserExist.role,
-    name: `${isUserExist.firstName!} ${isUserExist.lastName!}`,
+    name: isUserExist.fullName,
     email: isUserExist.email!,
     image: isUserExist.image!,
   }
 
-  return  authResponse(
-  StatusCodes.OK,
-  `Welcome back ${isUserExist.firstName!} ${isUserExist.lastName!}`,
-  undefined,           
-  tokens.accessToken,     
-  tokens.refreshToken,     
-  undefined,                 
-  userInfo                   
-)
+  return authResponse(
+    StatusCodes.OK,
+    `Welcome back ${isUserExist.fullName}`,
+    undefined,
+    tokens.accessToken,
+    tokens.refreshToken,
+    undefined,
+    userInfo
+  )
 }
 
 

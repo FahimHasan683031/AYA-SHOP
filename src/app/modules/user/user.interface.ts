@@ -19,15 +19,12 @@ export type IUser = {
     email: string;
     image?: string;
     password: string;
-    firstName: string;
-    lastName: string;
     status: USER_STATUS;
     verified: boolean;
     role: USER_ROLES;
     authentication: IAuthentication;
-    deviceToken?: string;
     fcmToken?: string;
-    fullName?: string;
+    fullName: string;
 };
 
 export type UserModel = {
