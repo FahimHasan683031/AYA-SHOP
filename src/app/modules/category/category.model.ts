@@ -13,11 +13,6 @@ const categorySchema = new Schema<ICategory>(
       type: String,
       required: true,
     },
-    parent: {
-      type: Schema.Types.ObjectId,
-      ref: 'Category',
-      default: null,
-    },
     isActive: {
       type: Boolean,
       default: true,

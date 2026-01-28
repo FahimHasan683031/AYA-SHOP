@@ -1,0 +1,4 @@
+{Thu Jan 29 2026 01:06:18} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/auth/login 400 - 321.994 ms
+{Thu Jan 29 2026 01:51:29} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/user/add-phone 404 - 8.709 ms
+{Thu Jan 29 2026 01:58:21} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/auth/verify-account 400 - 3.045 ms
+{Thu Jan 29 2026 01:59:34} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/auth/verify-account 400 - 1911.009 ms

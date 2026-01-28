@@ -301,15 +301,18 @@ const resetPassword = async (resetToken: string, payload: IResetPassword) => {
 }
 
 const verifyAccount = async (
-  email: string,
+  email: string | undefined,
+  phone: string | undefined,
   onetimeCode: string,
 ): Promise<IAuthResponse> => {
   //verify fo new user
   if (!onetimeCode) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'OTP is required.')
   }
+  const query = email ? { email: email.toLowerCase().trim() } : { $or: [{ phone: phone }, { 'authentication.tempPhone': phone }] };
+
   const isUserExist = await User.findOne({
-    email: email.toLowerCase().trim(),
+    ...query,
     status: { $nin: [USER_STATUS.DELETED] },
   })
     .select('+password +authentication')
@@ -318,7 +321,7 @@ const verifyAccount = async (
   if (!isUserExist) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
-      `No account found with this ${email}, please register first.`,
+      `No account found with this ${email || phone}, please register first.`,
     )
   }
 
@@ -370,6 +373,26 @@ const verifyAccount = async (
       tokens.refreshToken,
       undefined,
       userInfo,
+    )
+  } else if (phone && authentication.tempPhone === phone) {
+    await User.findByIdAndUpdate(
+      isUserExist._id,
+      {
+        $set: {
+          phone: phone,
+          'authentication.tempPhone': undefined,
+          'authentication.oneTimeCode': '',
+          'authentication.expiresAt': null,
+          'authentication.latestRequestAt': null,
+          'authentication.requestCount': 0,
+          'authentication.authType': '',
+        },
+      },
+      { new: true },
+    )
+    return authResponse(
+      StatusCodes.OK,
+      'Phone number verified successfully.',
     )
   } else {
     await User.findByIdAndUpdate(
@@ -555,18 +578,20 @@ const deleteAccount = async (user: JwtPayload, password: string) => {
 }
 
 const resendOtp = async (
-  email: string,
-  authType: 'createAccount' | 'resetPassword',
+  email: string | undefined,
+  phone: string | undefined,
+  authType: 'createAccount' | 'resetPassword' | 'verifyPhone',
 ) => {
+  const query = email ? { email: email.toLowerCase().trim() } : { $or: [{ phone: phone }, { 'authentication.tempPhone': phone }] };
   const isUserExist = await User.findOne({
-    email: email.toLowerCase().trim(),
+    ...query,
     status: { $in: [USER_STATUS.ACTIVE, USER_STATUS.RESTRICTED] },
   }).select('+authentication')
 
   if (!isUserExist) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
-      `No account found with this ${email}, please try again.`,
+      `No account found with this ${email || phone}, please try again.`,
     )
   }
 
@@ -597,12 +622,12 @@ const resendOtp = async (
   )
 
   // Send OTP to user
-  if (email) {
+  if (isUserExist.email) {
     const forgetPasswordEmailTemplate = emailTemplate.resendOtp({
-      email: email,
+      email: isUserExist.email,
       name: isUserExist.fullName,
       otp,
-      type: authType,
+      type: authType === 'verifyPhone' ? 'createAccount' : authType,
     })
 
     setTimeout(() => {
@@ -653,6 +678,41 @@ const changePassword = async (
   return { message: 'Password changed successfully' }
 }
 
+const addPhone = async (user: JwtPayload, phone: string) => {
+  const isUserExist = await User.findById(user.authId);
+  if (!isUserExist) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+  }
+
+  const otp = generateOtp();
+  const authentication = {
+    oneTimeCode: otp,
+    expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+    latestRequestAt: new Date(),
+    requestCount: 1,
+    authType: 'verifyPhone' as const,
+    tempPhone: phone
+  };
+
+  await User.findByIdAndUpdate(user.authId, {
+    $set: {
+      authentication
+    }
+  });
+
+  // Send OTP via email (as requested by user "phone otp send by nodemailler")
+  const emailData = emailTemplate.resendOtp({
+    email: isUserExist.email,
+    name: isUserExist.fullName,
+    otp,
+    type: 'createAccount' // Reusing createAccount template for simplicity or generic one if needed
+  });
+
+  await emailHelper.sendEmail(emailData);
+
+  return { message: 'OTP sent to your email for phone verification.' };
+}
+
 export const AuthServices = {
   forgetPassword,
   resetPassword,
@@ -665,5 +725,6 @@ export const AuthServices = {
   resendOtp,
   changePassword,
   createUser,
-  adminLogin
+  adminLogin,
+  addPhone
 }

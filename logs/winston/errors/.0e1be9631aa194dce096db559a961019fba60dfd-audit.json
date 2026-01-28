@@ -29,6 +29,11 @@
             "date": 1769624791360,
             "name": "D:\\Fahim\\Projects\\AYA-SHOP\\logs\\winston\\errors\\aya-shop-2026-01-29-00-error.log",
             "hash": "8ef33215ac752de986658d27e7f748703b9769903e9ccba7ec117f856af3a153"
+        },
+        {
+            "date": 1769626956634,
+            "name": "D:\\Fahim\\Projects\\AYA-SHOP\\logs\\winston\\errors\\aya-shop-2026-01-29-01-error.log",
+            "hash": "5c3585177b20e897f0c73e6aacc571924009b2e7eb0100fed36ddd988e08ba7c"
         }
     ],
     "hashType": "sha256"

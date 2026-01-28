@@ -84,6 +84,14 @@ router.delete(
   validateRequest(AuthValidations.deleteAccount),
   AuthController.deleteAccount,
 )
+
+router.post(
+  '/add-phone',
+  auth(USER_ROLES.CLIENT, USER_ROLES.BUSINESS, USER_ROLES.ADMIN),
+  validateRequest(AuthValidations.addPhoneZodSchema),
+  AuthController.addPhone,
+)
+
 router.post('/access-token', AuthController.getAccessToken)
 
 router.post('/logout', AuthController.logOut)

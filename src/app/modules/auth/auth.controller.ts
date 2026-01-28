@@ -69,7 +69,7 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
 const verifyAccount = catchAsync(async (req: Request, res: Response) => {
   const { oneTimeCode, phone, email } = req.body
 
-  const result = await AuthServices.verifyAccount(email, oneTimeCode)
+  const result = await AuthServices.verifyAccount(email, phone, oneTimeCode)
   const { status, message, accessToken, refreshToken, token, userInfo } = result
   if (refreshToken) {
     res.cookie('refreshToken', refreshToken, {
@@ -99,7 +99,7 @@ const getAccessToken = catchAsync(async (req: Request, res: Response) => {
 
 const resendOtp = catchAsync(async (req: Request, res: Response) => {
   const { email, phone, authType } = req.body
-  const result = await AuthServices.resendOtp(email, authType)
+  const result = await AuthServices.resendOtp(email, phone, authType)
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
@@ -144,6 +144,16 @@ const deleteAccount = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const addPhone = catchAsync(async (req: Request, res: Response) => {
+  const { phone } = req.body
+  const result = await AuthServices.addPhone(req.user!, phone)
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: result.message,
+  })
+})
+
 const logOut = catchAsync(async (req: Request, res: Response) => {
   res.clearCookie('refreshToken', {
     secure: config.node_env === 'production',
@@ -168,5 +178,6 @@ export const AuthController = {
   deleteAccount,
   adminLogin,
 
-  logOut
+  logOut,
+  addPhone
 }

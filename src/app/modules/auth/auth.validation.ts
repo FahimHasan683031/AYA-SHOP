@@ -69,6 +69,7 @@ const verifyAccountZodSchema = z.object({
   body: z.object({
     email: z
       .string()
+      .optional()
       .refine(value => !value || /^\S+@\S+\.\S+$/.test(value), {
         message: 'Invalid email format',
       }),
@@ -142,6 +143,12 @@ const createUserZodSchema = z.object({
   }),
 })
 
+const addPhoneZodSchema = z.object({
+  body: z.object({
+    phone: z.string({ required_error: 'Phone is required' }),
+  }),
+})
+
 
 
 export const AuthValidations = {
@@ -154,5 +161,5 @@ export const AuthValidations = {
   changePasswordZodSchema,
   createUserZodSchema,
   deleteAccount,
-
+  addPhoneZodSchema
 }

@@ -67,16 +67,18 @@ const UserSchema = new Schema(
             },
             authType: {
                 type: String,
-                enum: ['createAccount', 'resetPassword'],
+                enum: ['createAccount', 'resetPassword', 'verifyPhone'],
             },
-        },
-        deviceToken: {
-            type: String,
-            default: "",
+            tempPhone: {
+                type: String,
+            }
         },
         fcmToken: {
             type: String,
             default: "",
+        },
+        phone: {
+            type: String,
         },
     },
     {

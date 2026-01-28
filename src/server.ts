@@ -29,6 +29,9 @@ async function main() {
 
         })
 
+        // admin seed
+        UserServices.insertAdminIntoDB()
+
         //socket
         const io = new Server(server, {
             pingTimeout: 60000,

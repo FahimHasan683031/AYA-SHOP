@@ -96,6 +96,25 @@ const deleteMyAccount = async (user: JwtPayload) => {
     return 'Account deleted successfully'
 }
 
+const insertAdminIntoDB = async () => {
+    const admin = await User.findOne({
+        role: USER_ROLES.ADMIN,
+        email: config.super_admin.email,
+    });
+
+    if (!admin) {
+        await User.create({
+            fullName: config.super_admin.name || "Super Admin",
+            email: config.super_admin.email,
+            password: config.super_admin.password,
+            role: USER_ROLES.ADMIN,
+            verified: true,
+            status: USER_STATUS.ACTIVE,
+        });
+        console.log('✔ Admin user seeded successfully');
+    }
+}
+
 export const UserServices = {
     updateProfile,
     getAllUser,
@@ -103,4 +122,5 @@ export const UserServices = {
     deleteUser,
     getProfile,
     deleteMyAccount,
+    insertAdminIntoDB,
 }

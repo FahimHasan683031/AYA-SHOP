@@ -11,7 +11,8 @@ type IAuthentication = {
     latestRequestAt: Date
     expiresAt?: Date
     requestCount?: number
-    authType?: 'createAccount' | 'resetPassword'
+    authType?: 'createAccount' | 'resetPassword' | 'verifyPhone'
+    tempPhone?: string
 }
 
 export type IUser = {
@@ -25,6 +26,7 @@ export type IUser = {
     authentication: IAuthentication;
     fcmToken?: string;
     fullName: string;
+    phone?: string;
 };
 
 export type UserModel = {

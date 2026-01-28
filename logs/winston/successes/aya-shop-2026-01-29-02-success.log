@@ -1,0 +1,2 @@
+{Thu Jan 29 2026 02:00:04} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - POST /api/v1/auth/verify-account 200 - 534.052 ms
+{Thu Jan 29 2026 02:00:13} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - GET /api/v1/user/me 200 - 266.474 ms
