@@ -27,6 +27,23 @@ export type IUser = {
     fcmToken?: string;
     fullName: string;
     phone?: string;
+    business?: {
+        businessName: string;
+        category: Types.ObjectId;
+        description?: string;
+        yearsInBusiness?: number;
+        employeesCount?: number;
+        address?: string;
+        city?: string;
+        state?: string;
+        zipCode?: string;
+        website?: string;
+        logo?: string;
+        photos: string[];
+        facebook?: string;
+        instagram?: string;
+        twitter?: string;
+    };
 };
 
 export type UserModel = {

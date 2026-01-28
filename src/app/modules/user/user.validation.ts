@@ -36,9 +36,30 @@ export const changePasswordSchema = z.object({
   })
 });
 
+export const updateBusinessSchema = z.object({
+  body: z.object({
+    businessName: z.string().optional(),
+    category: z.string().optional(),
+    description: z.string().optional(),
+    yearsInBusiness: z.number().optional(),
+    employeesCount: z.number().optional(),
+    address: z.string().optional(),
+    city: z.string().optional(),
+    state: z.string().optional(),
+    zipCode: z.string().optional(),
+    website: z.string().optional(),
+    logo: z.string().optional(),
+    photos: z.array(z.string()).max(10).optional(),
+    facebook: z.string().optional(),
+    instagram: z.string().optional(),
+    twitter: z.string().optional(),
+  })
+});
+
 export const UserValidations = {
   userSignupSchema,
   userLoginSchema,
   userUpdateSchema,
   changePasswordSchema,
+  updateBusinessSchema,
 };

@@ -13,6 +13,7 @@ type IFolderName =
   | 'logo'
   | 'lostImage'
   | 'shippingLabel'
+  | 'photos'
 
 interface ProcessedFiles {
   [key: string]: string | string[] | undefined
@@ -25,6 +26,7 @@ const uploadFields = [
   { name: 'logo', maxCount: 1 },
   { name: 'lostImage', maxCount: 4 },
   { name: 'shippingLabel', maxCount: 1 },
+  { name: 'photos', maxCount: 10 },
 ] as const
 
 export const fileAndBodyProcessorUsingDiskStorage = () => {
@@ -69,6 +71,7 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
           'image/jpg',
           'application/pdf',
         ],
+        photos: ['image/jpeg', 'image/png', 'image/jpg'],
       };
 
       const fieldType = file.fieldname as IFolderName;
@@ -127,7 +130,7 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
                 paths.push(filePath);
 
                 if (
-                  ['image', 'logo', 'lostImage', 'shippingLabel'].includes(
+                  ['image', 'logo', 'lostImage', 'shippingLabel', 'photos'].includes(
                     fieldName,
                   ) &&
                   file.mimetype.startsWith('image/')
@@ -177,6 +180,7 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
           ...(processedFiles.lostImage && {
             images: processedFiles.lostImage,
           }),
+          ...(processedFiles.photos && { photos: processedFiles.photos }),
         };
 
         next();

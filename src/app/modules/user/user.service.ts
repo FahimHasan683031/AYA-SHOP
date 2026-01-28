@@ -115,6 +115,33 @@ const insertAdminIntoDB = async () => {
     }
 }
 
+const updateBusinessProfile = async (
+    user: JwtPayload,
+    payload: Partial<IUser['business']>
+) => {
+    const isExistUser = await User.findById(user.authId)
+
+    if (!isExistUser) {
+        throw new ApiError(StatusCodes.NOT_FOUND, 'User not found or deleted.')
+    }
+
+    if (isExistUser.role !== USER_ROLES.BUSINESS) {
+        throw new ApiError(StatusCodes.UNAUTHORIZED, 'Only business users can update business profile.')
+    }
+
+    const updatedUser = await User.findOneAndUpdate(
+        { _id: user.authId, status: { $ne: USER_STATUS.DELETED } },
+        { $set: { business: { ...isExistUser.business, ...payload } } },
+        { new: true },
+    )
+
+    if (!updatedUser) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, 'Failed to update business profile')
+    }
+
+    return updatedUser
+}
+
 export const UserServices = {
     updateProfile,
     getAllUser,
@@ -123,4 +150,5 @@ export const UserServices = {
     getProfile,
     deleteMyAccount,
     insertAdminIntoDB,
+    updateBusinessProfile
 }

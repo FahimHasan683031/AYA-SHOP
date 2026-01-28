@@ -1,8 +1,11 @@
 import express from 'express'
 import { UserController } from './user.controller'
 import auth from '../../middleware/auth'
+import validateRequest from '../../middleware/validateRequest'
+import { UserValidations } from './user.validation'
 import { USER_ROLES } from '../../../enum/user'
 import fileUploadHandler from '../../middleware/fileUploadHandler'
+import { fileAndBodyProcessorUsingDiskStorage } from '../../middleware/processReqBody'
 
 const router = express.Router()
 
@@ -17,6 +20,14 @@ router.patch(
   auth(USER_ROLES.CLIENT, USER_ROLES.BUSINESS, USER_ROLES.ADMIN),
   fileUploadHandler(),
   UserController.updateProfile,
+)
+
+router.patch(
+  '/business-profile',
+  auth(USER_ROLES.BUSINESS),
+  fileAndBodyProcessorUsingDiskStorage(),
+  validateRequest(UserValidations.updateBusinessSchema),
+  UserController.updateBusinessProfile,
 )
 
 // delete my account

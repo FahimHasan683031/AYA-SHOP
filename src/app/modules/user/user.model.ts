@@ -80,6 +80,23 @@ const UserSchema = new Schema(
         phone: {
             type: String,
         },
+        business: {
+            businessName: { type: String },
+            category: { type: Schema.Types.ObjectId, ref: "Category" },
+            description: { type: String },
+            yearsInBusiness: { type: Number },
+            employeesCount: { type: Number },
+            address: { type: String },
+            city: { type: String },
+            state: { type: String },
+            zipCode: { type: String },
+            website: { type: String },
+            logo: { type: String },
+            photos: [{ type: String }],
+            facebook: { type: String },
+            instagram: { type: String },
+            twitter: { type: String },
+        },
     },
     {
         timestamps: true,
