@@ -6,11 +6,6 @@
     "auditLog": "D:\\Fahim\\Projects\\AYA-SHOP\\logs\\winston\\errors\\.0e1be9631aa194dce096db559a961019fba60dfd-audit.json",
     "files": [
         {
-            "date": 1768505643603,
-            "name": "D:\\Fahim\\Projects\\AYA-SHOP\\logs\\winston\\errors\\aya-shop-2026-01-16-01-error.log",
-            "hash": "9757f992146f778886ff795c0c607a143c5d627283b304ccb866582c39051ef0"
-        },
-        {
             "date": 1768933149922,
             "name": "D:\\Fahim\\Projects\\AYA-SHOP\\logs\\winston\\errors\\aya-shop-2026-01-21-00-error.log",
             "hash": "2660912f50e71235bba109ac7c2aac743f2c0f9f111c860eec2f2152e4a96657"
@@ -54,6 +49,11 @@
             "date": 1769714237829,
             "name": "D:\\Fahim\\Projects\\AYA-SHOP\\logs\\winston\\errors\\aya-shop-2026-01-30-01-error.log",
             "hash": "bd25040e7158fb4f21a97dbfb56d93b3ac988ed9901bba41807eb37ab3efb9a3"
+        },
+        {
+            "date": 1769717936234,
+            "name": "D:\\Fahim\\Projects\\AYA-SHOP\\logs\\winston\\errors\\aya-shop-2026-01-30-02-error.log",
+            "hash": "c08e29ea7b602768a86fc9f24f860964f1aaab23b0c0ac69631b775f4e049f8f"
         }
     ],
     "hashType": "sha256"

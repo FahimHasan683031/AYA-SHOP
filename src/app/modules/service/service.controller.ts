@@ -55,10 +55,21 @@ const deleteService = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getAvailableSlots = catchAsync(async (req: Request, res: Response) => {
+    const result = await ServiceService.getAvailableSlotsFromDB(req.params.id, req.query.date as string);
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Available slots fetched successfully",
+        data: result,
+    });
+});
+
 export const ServiceController = {
     createService,
     getAllServices,
     getSingleService,
     updateService,
     deleteService,
+    getAvailableSlots,
 };

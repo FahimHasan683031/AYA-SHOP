@@ -13,6 +13,7 @@ import { ChatRoutes } from '../modules/chat/chat.routes';
 import { MessageRoutes } from '../modules/message/message.routes';
 import { NotificationRoutes } from '../modules/notification/notification.routes';
 import { ServiceRoutes } from '../modules/service/service.route';
+import { BookingRoutes } from '../modules/booking/booking.route';
 
 
 const router = express.Router();
@@ -31,6 +32,7 @@ const apiRoutes = [
     { path: "/message", route: MessageRoutes },
     { path: "/notification", route: NotificationRoutes },
     { path: "/service", route: ServiceRoutes },
+    { path: "/booking", route: BookingRoutes },
 ]
 
 router.post('/webhook', handleStripeWebhook);

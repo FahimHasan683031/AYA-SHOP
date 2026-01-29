@@ -18,6 +18,8 @@ router.get("/", ServiceController.getAllServices);
 
 router.get("/:id", ServiceController.getSingleService);
 
+router.get("/:id/availability", ServiceController.getAvailableSlots);
+
 router.patch(
     "/:id",
     auth(USER_ROLES.BUSINESS),
