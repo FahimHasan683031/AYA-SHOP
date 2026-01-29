@@ -24,8 +24,7 @@ export const userUpdateSchema = z.object({
     image: z.string().optional(),
     password: z.string().min(6, "Password must be at least 6 characters").optional(),
     status: z.nativeEnum(USER_STATUS).optional(),
-    verified: z.boolean().optional(),
-    role: z.nativeEnum(USER_ROLES).optional(),
+    verified: z.boolean().optional()
   })
 });
 
@@ -34,6 +33,10 @@ export const changePasswordSchema = z.object({
     currentPassword: z.string().min(1, "Current password is required"),
     newPassword: z.string().min(6, "New password must be at least 6 characters"),
   })
+});
+
+const timeStringSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, {
+  message: 'Invalid time format. Expected "HH:mm" in 24-hour format.',
 });
 
 export const updateBusinessSchema = z.object({
@@ -53,6 +56,15 @@ export const updateBusinessSchema = z.object({
     facebook: z.string().optional(),
     instagram: z.string().optional(),
     twitter: z.string().optional(),
+    businessHours: z.object({
+      monday: z.object({ from: timeStringSchema, to: timeStringSchema }),
+      tuesday: z.object({ from: timeStringSchema, to: timeStringSchema }),
+      wednesday: z.object({ from: timeStringSchema, to: timeStringSchema }),
+      thursday: z.object({ from: timeStringSchema, to: timeStringSchema }),
+      friday: z.object({ from: timeStringSchema, to: timeStringSchema }),
+      saturday: z.object({ from: timeStringSchema, to: timeStringSchema }),
+      sunday: z.object({ from: timeStringSchema, to: timeStringSchema }),
+    }).optional(),
   })
 });
 

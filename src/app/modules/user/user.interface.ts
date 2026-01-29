@@ -15,6 +15,21 @@ type IAuthentication = {
     tempPhone?: string
 }
 
+export type IBusinessHour = {
+    from: string;
+    to: string;
+};
+
+export type IBusinessHours = {
+    monday: IBusinessHour;
+    tuesday: IBusinessHour;
+    wednesday: IBusinessHour;
+    thursday: IBusinessHour;
+    friday: IBusinessHour;
+    saturday: IBusinessHour;
+    sunday: IBusinessHour;
+};
+
 export type IUser = {
     _id: Types.ObjectId;
     email: string;
@@ -43,6 +58,7 @@ export type IUser = {
         facebook?: string;
         instagram?: string;
         twitter?: string;
+        businessHours?: IBusinessHours;
     };
 };
 

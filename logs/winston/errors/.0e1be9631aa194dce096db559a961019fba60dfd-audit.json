@@ -39,6 +39,21 @@
             "date": 1769631921501,
             "name": "D:\\Fahim\\Projects\\AYA-SHOP\\logs\\winston\\errors\\aya-shop-2026-01-29-02-error.log",
             "hash": "afd53ef090cef675dab06c52dc283ce909a6e517e0a133a8bc684cb3a28d3949"
+        },
+        {
+            "date": 1769708905925,
+            "name": "D:\\Fahim\\Projects\\AYA-SHOP\\logs\\winston\\errors\\aya-shop-2026-01-29-23-error.log",
+            "hash": "e440a6e54f110ea37964064e8a1fc1be0a7e3909e90544a24419007c9d93479e"
+        },
+        {
+            "date": 1769711551811,
+            "name": "D:\\Fahim\\Projects\\AYA-SHOP\\logs\\winston\\errors\\aya-shop-2026-01-30-00-error.log",
+            "hash": "3a3cb0bc288b17be9ca61026c80e9808e6a022ee0e135d0c1fe7aa9a0879c787"
+        },
+        {
+            "date": 1769714237829,
+            "name": "D:\\Fahim\\Projects\\AYA-SHOP\\logs\\winston\\errors\\aya-shop-2026-01-30-01-error.log",
+            "hash": "bd25040e7158fb4f21a97dbfb56d93b3ac988ed9901bba41807eb37ab3efb9a3"
         }
     ],
     "hashType": "sha256"

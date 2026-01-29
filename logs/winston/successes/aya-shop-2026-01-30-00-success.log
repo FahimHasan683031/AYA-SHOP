@@ -1,0 +1,8 @@
+{Fri Jan 30 2026 00:21:37} [AYA SHOP 🚀] info: ::ffff:10.10.7.28 - POST /api/v1/auth/signup 200 - 1782.955 ms
+{Fri Jan 30 2026 00:21:41} [AYA SHOP 🚀] info: Mail send successfully
+{Fri Jan 30 2026 00:22:27} [AYA SHOP 🚀] info: ::ffff:10.10.7.28 - POST /api/v1/auth/verify-account 200 - 787.262 ms
+{Fri Jan 30 2026 00:33:43} [AYA SHOP 🚀] info: Mail send successfully
+{Fri Jan 30 2026 00:33:43} [AYA SHOP 🚀] info: ::ffff:10.10.7.28 - POST /api/v1/auth/add-phone 200 - 6042.172 ms
+{Fri Jan 30 2026 00:35:22} [AYA SHOP 🚀] info: ::ffff:10.10.7.28 - POST /api/v1/auth/verify-account 200 - 561.718 ms
+{Fri Jan 30 2026 00:41:15} [AYA SHOP 🚀] info: ::ffff:10.10.7.34 - POST /api/v1/auth/signup 200 - 1591.798 ms
+{Fri Jan 30 2026 00:41:18} [AYA SHOP 🚀] info: Mail send successfully

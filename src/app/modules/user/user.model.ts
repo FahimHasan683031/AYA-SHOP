@@ -96,6 +96,15 @@ const UserSchema = new Schema(
             facebook: { type: String },
             instagram: { type: String },
             twitter: { type: String },
+            businessHours: {
+                monday: { from: { type: String }, to: { type: String } },
+                tuesday: { from: { type: String }, to: { type: String } },
+                wednesday: { from: { type: String }, to: { type: String } },
+                thursday: { from: { type: String }, to: { type: String } },
+                friday: { from: { type: String }, to: { type: String } },
+                saturday: { from: { type: String }, to: { type: String } },
+                sunday: { from: { type: String }, to: { type: String } },
+            },
         },
     },
     {
