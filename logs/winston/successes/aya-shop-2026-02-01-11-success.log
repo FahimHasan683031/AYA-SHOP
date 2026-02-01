@@ -70,3 +70,28 @@
 {Sun Feb 01 2026 11:48:17} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
 {Sun Feb 01 2026 11:49:51} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - POST /api/v1/booking 200 - 2103.858 ms
 {Sun Feb 01 2026 11:50:44} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - GET /api/v1/booking/my-bookings 200 - 645.593 ms
+{Sun Feb 01 2026 11:54:07} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 01 2026 11:54:07} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 01 2026 11:54:07} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 01 2026 11:54:09} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 01 2026 11:54:09} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 01 2026 11:54:09} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 01 2026 11:54:23} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 01 2026 11:54:23} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 01 2026 11:54:23} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 01 2026 11:54:25} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 01 2026 11:54:25} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 01 2026 11:54:25} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 01 2026 11:54:30} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 01 2026 11:54:30} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 01 2026 11:54:30} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 01 2026 11:54:36} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - GET /api/v1/booking/my-bookings 200 - 1210.047 ms
+{Sun Feb 01 2026 11:57:54} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 01 2026 11:57:54} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 01 2026 11:57:54} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 01 2026 11:57:59} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 01 2026 11:57:59} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 01 2026 11:57:59} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 01 2026 11:58:51} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - GET /api/v1/booking 200 - 827.665 ms
+{Sun Feb 01 2026 11:59:14} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - GET /api/v1/booking 200 - 815.357 ms
+{Sun Feb 01 2026 11:59:28} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - GET /api/v1/booking 200 - 815.918 ms

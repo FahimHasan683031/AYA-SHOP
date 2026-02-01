@@ -156,28 +156,20 @@ const createBookingToDB = async (userId: string, payload: IBooking) => {
     return result;
 };
 
-const getMyBookingsFromDB = async (userId: string, query: Record<string, unknown>) => {
+const getAllBookingsFromDB = async (user: any, query: Record<string, unknown>) => {
+    let filter: Record<string, unknown> = {};
+
+    if (user.role === 'client') {
+        filter = { user: user.authId };
+    } else if (user.role === 'business') {
+        filter = { provider: user.authId };
+    } else if (user.role === 'admin') {
+        // Admin sees all bookings, no filter needed
+        filter = {};
+    }
+
     const bookingQuery = new QueryBuilder(
-        Booking.find({ user: userId }).populate("service provider"),
-        query
-    )
-        .filter()
-        .sort()
-        .paginate()
-        .fields();
-
-    const result = await bookingQuery.modelQuery;
-    const meta = await bookingQuery.getPaginationInfo();
-
-    return {
-        meta,
-        result,
-    };
-};
-
-const getProviderBookingsFromDB = async (providerId: string, query: Record<string, unknown>) => {
-    const bookingQuery = new QueryBuilder(
-        Booking.find({ provider: providerId }).populate("service user"),
+        Booking.find(filter).populate("service provider user"),
         query
     )
         .filter()
@@ -214,7 +206,6 @@ const updateBookingStatusInDB = async (id: string, providerId: string, status: s
 
 export const BookingService = {
     createBookingToDB,
-    getMyBookingsFromDB,
-    getProviderBookingsFromDB,
+    getAllBookingsFromDB,
     updateBookingStatusInDB,
 };

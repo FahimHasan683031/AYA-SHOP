@@ -14,12 +14,10 @@ router.post(
     BookingController.createBooking
 );
 
-router.get("/my-bookings", auth(USER_ROLES.CLIENT), BookingController.getMyBookings);
-
 router.get(
-    "/provider-bookings",
-    auth(USER_ROLES.BUSINESS),
-    BookingController.getProviderBookings
+    "/",
+    auth(USER_ROLES.CLIENT, USER_ROLES.BUSINESS, USER_ROLES.ADMIN),
+    BookingController.getAllBookings
 );
 
 router.patch(
