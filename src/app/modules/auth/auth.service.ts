@@ -327,6 +327,8 @@ const verifyAccount = async (
 
   const { authentication } = isUserExist
 
+  console.log(isUserExist)
+
   //check the otp
   if (authentication?.oneTimeCode !== onetimeCode) {
     throw new ApiError(
@@ -380,12 +382,14 @@ const verifyAccount = async (
       {
         $set: {
           phone: phone,
-          'authentication.tempPhone': undefined,
           'authentication.oneTimeCode': '',
           'authentication.expiresAt': null,
           'authentication.latestRequestAt': null,
           'authentication.requestCount': 0,
           'authentication.authType': '',
+        },
+        $unset: {
+          'authentication.tempPhone': 1,
         },
       },
       { new: true },
@@ -682,6 +686,18 @@ const addPhone = async (user: JwtPayload, phone: string) => {
   const isUserExist = await User.findById(user.authId);
   if (!isUserExist) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+  }
+
+  const isPhoneExist = await User.findOne({
+    phone: phone,
+    status: { $in: [USER_STATUS.ACTIVE, USER_STATUS.RESTRICTED] },
+  });
+
+  if (isPhoneExist) {
+    throw new ApiError(
+      StatusCodes.BAD_REQUEST,
+      'This phone number is already in use by another account.',
+    );
   }
 
   const otp = generateOtp();
