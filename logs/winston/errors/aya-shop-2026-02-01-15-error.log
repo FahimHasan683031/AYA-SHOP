@@ -1,0 +1,6 @@
+{Sun Feb 01 2026 15:01:29} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/message 400 - 1029.351 ms
+{Sun Feb 01 2026 15:03:11} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - GET /api/v1/api/message/697f137f13e9e7d9f4c04f2b?page=1&limit=50 404 - 3.091 ms
+{Sun Feb 01 2026 15:03:19} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - GET /api/v1/message/697f137f13e9e7d9f4c04f2b?page=1&limit=50 404 - 3.442 ms
+{Sun Feb 01 2026 15:03:30} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - GET /api/v1/message/697f137f13e9e7d9f4c04f2b?page=1&limit=50 500 - 843.488 ms
+{Sun Feb 01 2026 15:04:59} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - GET /api/v1/api/message/unread/count 404 - 0.856 ms
+{Sun Feb 01 2026 15:08:11} [AYA SHOP 🐞] error: UnhandledRejection Detected Operation `users.findOne()` buffering timed out after 10000ms

@@ -17,3 +17,4 @@
 {Sun Feb 01 2026 11:49:24} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/booking 400 - 682.908 ms
 {Sun Feb 01 2026 11:49:35} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/booking 400 - 1410.977 ms
 {Sun Feb 01 2026 11:50:09} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/booking 400 - 1332.350 ms
+{Sun Feb 01 2026 11:58:33} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - GET /api/v1/bookings 404 - 3.727 ms

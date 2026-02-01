@@ -5,6 +5,7 @@ import { Booking } from "./booking.model";
 import { Service } from "../service/service.model";
 import { User } from "../user/user.model";
 import QueryBuilder from "../../builder/QueryBuilder";
+import { NotificationService } from "../notification/notification.service";
 
 const createBookingToDB = async (userId: string, payload: IBooking) => {
     const service = await Service.findById(payload.service);
@@ -151,6 +152,18 @@ const createBookingToDB = async (userId: string, payload: IBooking) => {
     // Increment booking count in service
     await Service.findByIdAndUpdate(payload.service, {
         $inc: { bookingCount: 1 },
+    });
+
+    // Send Notification to Provider
+    const user = await User.findById(userId).select('fullName');
+    const userName = user?.fullName || 'A customer';
+
+    await NotificationService.insertNotification({
+        receiver: service.provider,
+        title: "New Booking",
+        message: `You have received a new booking from ${userName}`,
+        type: "ADMIN", // Assuming 'ADMIN' type is used for general business notifications based on model, or adjust if 'BOOKING' added to enum
+        referenceId: result._id as any,
     });
 
     return result;

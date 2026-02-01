@@ -1,0 +1,20 @@
+{Sun Feb 01 2026 15:02:06} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - POST /api/v1/message 200 - 3844.426 ms
+{Sun Feb 01 2026 15:02:21} [AYA SHOP 🚀] info: [34mA user connected[39m
+{Sun Feb 01 2026 15:02:32} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - POST /api/v1/message 200 - 1525.351 ms
+{Sun Feb 01 2026 15:04:27} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 01 2026 15:04:27} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 01 2026 15:04:27} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 01 2026 15:04:42} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - GET /api/v1/message/697f137f13e9e7d9f4c04f2b?page=1&limit=50 200 - 2502.252 ms
+{Sun Feb 01 2026 15:05:07} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - GET /api/v1/message/unread/count 200 - 699.202 ms
+{Sun Feb 01 2026 15:05:33} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - POST /api/v1/chat/admin-support 200 - 763.848 ms
+{Sun Feb 01 2026 15:05:50} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - GET /api/v1/chat 200 - 1219.695 ms
+{Sun Feb 01 2026 15:07:02} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 01 2026 15:07:02} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 01 2026 15:07:02} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 01 2026 15:08:01} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 01 2026 15:08:01} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 01 2026 15:08:01} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 01 2026 15:08:56} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 01 2026 15:08:56} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 01 2026 15:08:56} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 01 2026 15:09:12} [AYA SHOP 🚀] info: ::ffff:10.10.7.26 - GET /api/v1/chat 200 - 1393.689 ms

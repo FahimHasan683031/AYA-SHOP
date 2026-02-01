@@ -16,6 +16,8 @@ const sendMessageToDB = async (payload: any): Promise<IMessage> => {
   // Initialize readBy with sender's ID
   payload.readBy = [payload.sender];
 
+  console.log({payload});
+
 
   const isExistChat = await Chat.findById(payload.chatId);
   if (!isExistChat) {
@@ -100,7 +102,7 @@ const getMessageFromDB = async (
     throw new ApiError(StatusCodes.BAD_REQUEST, "Chat doesn't exist!");
   }
 
-  if (!isExistChat.participants.some(p => p.toString() === user.id.toString())) {
+  if (!isExistChat.participants.some(p => p.toString() === user.authId.toString())) {
     throw new Error('You are not participant of this chat')
   }
 
