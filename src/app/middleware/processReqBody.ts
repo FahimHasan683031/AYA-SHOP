@@ -11,8 +11,6 @@ type IFolderName =
   | 'media'
   | 'documents'
   | 'logo'
-  | 'lostImage'
-  | 'shippingLabel'
   | 'photos'
 
 interface ProcessedFiles {
@@ -24,8 +22,6 @@ const uploadFields = [
   { name: 'media', maxCount: 3 },
   { name: 'documents', maxCount: 3 },
   { name: 'logo', maxCount: 1 },
-  { name: 'lostImage', maxCount: 4 },
-  { name: 'shippingLabel', maxCount: 1 },
   { name: 'photos', maxCount: 10 },
 ] as const
 
@@ -64,13 +60,6 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
         media: ['video/mp4', 'audio/mpeg'],
         documents: ['application/pdf'],
         logo: ['image/jpeg', 'image/png', 'image/jpg'],
-        lostImage: ['image/jpeg', 'image/png', 'image/jpg'],
-        shippingLabel: [
-          'image/jpeg',
-          'image/png',
-          'image/jpg',
-          'application/pdf',
-        ],
         photos: ['image/jpeg', 'image/png', 'image/jpg'],
       };
 
@@ -130,7 +119,7 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
                 paths.push(filePath);
 
                 if (
-                  ['image', 'logo', 'lostImage', 'shippingLabel', 'photos'].includes(
+                  ['image', 'logo', 'photos'].includes(
                     fieldName,
                   ) &&
                   file.mimetype.startsWith('image/')
@@ -174,12 +163,6 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
           ...req.body,
           ...(processedFiles.logo && { logo: processedFiles.logo }),
           ...(processedFiles.image && { image: processedFiles.image }),
-          ...(processedFiles.shippingLabel && {
-            shippingLabel: processedFiles.shippingLabel,
-          }),
-          ...(processedFiles.lostImage && {
-            images: processedFiles.lostImage,
-          }),
           ...(processedFiles.photos && { photos: processedFiles.photos }),
         };
 
