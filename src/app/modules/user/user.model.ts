@@ -39,7 +39,8 @@ const UserSchema = new Schema(
             default: USER_ROLES.CLIENT,
         },
         authentication: {
-            restrictionLeftAt: {
+          type:{
+              restrictionLeftAt: {
                 type: Date,
                 default: null,
             },
@@ -71,7 +72,9 @@ const UserSchema = new Schema(
             },
             tempPhone: {
                 type: String,
-            }
+            }, 
+          },
+            select: 0
         },
         fcmToken: {
             type: String,

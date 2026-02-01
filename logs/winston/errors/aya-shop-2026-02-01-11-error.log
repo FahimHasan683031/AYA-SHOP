@@ -1,0 +1,6 @@
+{Sun Feb 01 2026 11:02:47} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/service 400 - 124.451 ms
+{Sun Feb 01 2026 11:04:03} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/service 400 - 147.104 ms
+{Sun Feb 01 2026 11:05:15} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/service 400 - 100.866 ms
+{Sun Feb 01 2026 11:05:17} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/service 400 - 80.140 ms
+{Sun Feb 01 2026 11:05:54} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/service 400 - 101.605 ms
+{Sun Feb 01 2026 11:06:33} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/service 400 - 103.538 ms

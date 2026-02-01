@@ -4,12 +4,14 @@ import auth from "../../middleware/auth";
 import { USER_ROLES } from "../user/user.interface";
 import validateRequest from "../../middleware/validateRequest";
 import { ServiceValidation } from "./service.validation";
+import { fileAndBodyProcessorUsingDiskStorage } from "../../middleware/processReqBody";
 
 const router = express.Router();
 
 router.post(
     "/",
     auth(USER_ROLES.BUSINESS),
+    fileAndBodyProcessorUsingDiskStorage(),
     validateRequest(ServiceValidation.createServiceSchema),
     ServiceController.createService
 );

@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { ServiceService } from "./service.service";
 
 const createService = catchAsync(async (req: Request, res: Response) => {
-    const result = await ServiceService.createServiceToDB((req as any).user._id, req.body);
+    const result = await ServiceService.createServiceToDB(req.user.authId, req.body);
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         success: true,
