@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { BookingService } from "./booking.service";
 
 const createBooking = catchAsync(async (req: Request, res: Response) => {
-    const result = await BookingService.createBookingToDB((req as any).user._id, req.body);
+    const result = await BookingService.createBookingToDB(req.user.authId, req.body);
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         success: true,
