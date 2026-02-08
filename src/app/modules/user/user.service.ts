@@ -7,6 +7,7 @@ import { JwtPayload } from 'jsonwebtoken'
 import { logger } from '../../../shared/logger'
 import QueryBuilder from '../../builder/QueryBuilder'
 import config from '../../../config'
+import { CategoryModel } from '../category/category.model'
 
 
 const getAllUser = async (query: Record<string, unknown>) => {
@@ -111,7 +112,9 @@ const insertAdminIntoDB = async () => {
             verified: true,
             status: USER_STATUS.ACTIVE,
         });
-        console.log('✔ Admin user seeded successfully');
+        logger.info('✔ Admin user seeded successfully');
+    } else {
+        logger.info('ℹ Admin user already exists');
     }
 }
 
@@ -123,6 +126,13 @@ const updateBusinessProfile = async (
 
     if (!isExistUser) {
         throw new ApiError(StatusCodes.NOT_FOUND, 'User not found or deleted.')
+    }
+
+    if (payload?.category) {
+        const isExistCategory = await CategoryModel.findOne({ _id: payload.category })
+        if (!isExistCategory) {
+            throw new ApiError(StatusCodes.NOT_FOUND, 'Category not found.')
+        }
     }
 
     if (isExistUser.role !== USER_ROLES.BUSINESS) {

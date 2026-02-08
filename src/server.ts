@@ -2,10 +2,10 @@ import colors from 'colors'
 import mongoose from 'mongoose'
 import { Server } from 'socket.io'
 import app from './app'
-import config from './config'
 import { errorLogger, logger } from './shared/logger'
 import { socketHelper } from './helpers/socketHelper'
 import { UserServices } from './app/modules/user/user.service'
+import config from './config'
 
 process.on('uncaughtException', error => {
     errorLogger.error('UnhandledException Detected', error)
@@ -16,6 +16,7 @@ export const onlineUsers = new Map()
 let server: any
 async function main() {
     try {
+        console.log(config.database_url, 'url')
         mongoose.connect(config.database_url as string)
         logger.info(colors.green('🚀 Database connected successfully'))
 

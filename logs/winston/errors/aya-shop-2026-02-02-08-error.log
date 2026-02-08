@@ -1,0 +1,4 @@
+{Mon Feb 02 2026 08:03:05} [AYA SHOP 🐞] error: UnhandledRejection Detected Operation `users.findOne()` buffering timed out after 10000ms
+{Mon Feb 02 2026 08:11:25} [AYA SHOP 🐞] error: UnhandledRejection Detected Operation `users.findOne()` buffering timed out after 10000ms
+{Mon Feb 02 2026 08:25:23} [AYA SHOP 🐞] error: UnhandledRejection Detected querySrv ECONNREFUSED _mongodb._tcp.cluster0.m2apie0.mongodb.net
+{Mon Feb 02 2026 08:25:44} [AYA SHOP 🐞] error: UnhandledRejection Detected querySrv ECONNREFUSED _mongodb._tcp.cluster0.m2apie0.mongodb.net

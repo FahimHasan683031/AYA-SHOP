@@ -1,0 +1,15 @@
+{Thu Feb 05 2026 23:00:59} [AYA SHOP 🐞] error: [31mServer Failed to connect Database[39m querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
+{Thu Feb 05 2026 23:03:45} [AYA SHOP 🐞] error: [31mServer Failed to connect Database[39m querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
+{Thu Feb 05 2026 23:07:20} [AYA SHOP 🐞] error: [31mServer Failed to connect Database[39m querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
+{Thu Feb 05 2026 23:08:19} [AYA SHOP 🐞] error: UnhandledRejection Detected querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
+{Thu Feb 05 2026 23:12:50} [AYA SHOP 🐞] error: UnhandledRejection Detected querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
+{Thu Feb 05 2026 23:13:04} [AYA SHOP 🐞] error: UnhandledRejection Detected querySrv ECONNREFUSED _mongodb._tcp.cluster0.m2apie0.mongodb.net
+{Thu Feb 05 2026 23:13:42} [AYA SHOP 🐞] error: [31mServer Failed to connect Database[39m
+{Thu Feb 05 2026 23:21:28} [AYA SHOP 🐞] error: UnhandledRejection Detected querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
+{Thu Feb 05 2026 23:21:54} [AYA SHOP 🐞] error: UnhandledRejection Detected querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
+{Thu Feb 05 2026 23:23:51} [AYA SHOP 🐞] error: [31mServer Failed to connect Database[39m querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
+{Thu Feb 05 2026 23:23:51} [AYA SHOP 🐞] error: [31mServer Failed to connect Database[39m querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
+{Thu Feb 05 2026 23:24:01} [AYA SHOP 🐞] error: [31mServer Failed to connect Database[39m querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
+{Thu Feb 05 2026 23:24:12} [AYA SHOP 🐞] error: [31mServer Failed to connect Database[39m querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
+{Thu Feb 05 2026 23:27:56} [AYA SHOP 🐞] error: UnhandledRejection Detected querySrv ECONNREFUSED _mongodb._tcp.cluster0.m2apie0.mongodb.net
+{Thu Feb 05 2026 23:29:25} [AYA SHOP 🐞] error: UnhandledRejection Detected querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net

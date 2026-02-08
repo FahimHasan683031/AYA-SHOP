@@ -1,0 +1,3 @@
+{Thu Feb 05 2026 22:50:39} [AYA SHOP 🐞] error: UnhandledRejection Detected querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
+{Thu Feb 05 2026 22:59:30} [AYA SHOP 🐞] error: [31mServer Failed to connect Database[39m querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
+{Thu Feb 05 2026 22:59:50} [AYA SHOP 🐞] error: [31mServer Failed to connect Database[39m querySrv ECONNREFUSED _mongodb._tcp.cluster0.n7cvauq.mongodb.net
