@@ -39,41 +39,41 @@ const UserSchema = new Schema(
             default: USER_ROLES.CLIENT,
         },
         authentication: {
-          type:{
-              restrictionLeftAt: {
-                type: Date,
-                default: null,
+            type: {
+                restrictionLeftAt: {
+                    type: Date,
+                    default: null,
+                },
+                resetPassword: {
+                    type: Boolean,
+                    default: false,
+                },
+                wrongLoginAttempts: {
+                    type: Number,
+                    default: 0,
+                },
+                passwordChangedAt: Date,
+                oneTimeCode: {
+                    type: String,
+                    default: "",
+                },
+                latestRequestAt: {
+                    type: Date,
+                    default: Date.now,
+                },
+                expiresAt: Date,
+                requestCount: {
+                    type: Number,
+                    default: 0,
+                },
+                authType: {
+                    type: String,
+                    enum: ['createAccount', 'resetPassword', 'verifyPhone'],
+                },
+                tempPhone: {
+                    type: String,
+                },
             },
-            resetPassword: {
-                type: Boolean,
-                default: false,
-            },
-            wrongLoginAttempts: {
-                type: Number,
-                default: 0,
-            },
-            passwordChangedAt: Date,
-            oneTimeCode: {
-                type: String,
-                default: "",
-            },
-            latestRequestAt: {
-                type: Date,
-                default: Date.now,
-            },
-            expiresAt: Date,
-            requestCount: {
-                type: Number,
-                default: 0,
-            },
-            authType: {
-                type: String,
-                enum: ['createAccount', 'resetPassword', 'verifyPhone'],
-            },
-            tempPhone: {
-                type: String,
-            }, 
-          },
             select: 0
         },
         fcmToken: {
@@ -84,30 +84,34 @@ const UserSchema = new Schema(
             type: String,
         },
         business: {
-            businessName: { type: String },
-            category: { type: Schema.Types.ObjectId, ref: "Category" },
-            description: { type: String },
-            yearsInBusiness: { type: Number },
-            employeesCount: { type: Number },
-            address: { type: String },
-            city: { type: String },
-            state: { type: String },
-            zipCode: { type: String },
-            website: { type: String },
-            logo: { type: String },
-            photos: [{ type: String }],
-            facebook: { type: String },
-            instagram: { type: String },
-            twitter: { type: String },
-            businessHours: {
-                monday: { from: { type: String }, to: { type: String } },
-                tuesday: { from: { type: String }, to: { type: String } },
-                wednesday: { from: { type: String }, to: { type: String } },
-                thursday: { from: { type: String }, to: { type: String } },
-                friday: { from: { type: String }, to: { type: String } },
-                saturday: { from: { type: String }, to: { type: String } },
-                sunday: { from: { type: String }, to: { type: String } },
+            type: {
+                businessName: { type: String },
+                category: { type: Schema.Types.ObjectId, ref: "Category" },
+                description: { type: String },
+                yearsInBusiness: { type: Number },
+                employeesCount: { type: Number },
+                address: { type: String },
+                city: { type: String },
+                state: { type: String },
+                zipCode: { type: String },
+                website: { type: String },
+                logo: { type: String },
+                photos: [{ type: String }],
+                facebook: { type: String },
+                instagram: { type: String },
+                twitter: { type: String },
+                businessHours: {
+                    monday: { from: { type: String }, to: { type: String } },
+                    tuesday: { from: { type: String }, to: { type: String } },
+                    wednesday: { from: { type: String }, to: { type: String } },
+                    thursday: { from: { type: String }, to: { type: String } },
+                    friday: { from: { type: String }, to: { type: String } },
+                    saturday: { from: { type: String }, to: { type: String } },
+                    sunday: { from: { type: String }, to: { type: String } },
+                },
             },
+            required: false,
+            default: undefined
         },
     },
     {

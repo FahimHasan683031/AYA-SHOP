@@ -6,8 +6,8 @@ import sendResponse from "../../../shared/sendResponse";
 import handleStripeWebhook from "../../../stripe/handleStripeWebhook";
 
 const createCheckoutSession = catchAsync(async (req: Request, res: Response) => {
-  const { amount } = req.body; // User should provide amount or it should be fetched based on referenceId
-  const result = await PaymentService.creatSession(req.user!, req.params.referenceId as string, amount);
+  const { amount } = req.body; 
+  const result = await PaymentService.creatSession(req.user!, req.params.bookingId as string, amount);
 
   res.status(StatusCodes.OK).json({ url: result.url })
 

@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import ApiError from "../../../errors/ApiError";
 import { IBooking } from "./booking.interface";
 import { Booking } from "./booking.model";
+import { BOOKING_STATUS, PAYMENT_STATUS } from "../../../enum/booking";
 import { Service } from "../service/service.model";
 import { User } from "../user/user.model";
 import QueryBuilder from "../../builder/QueryBuilder";
@@ -147,7 +148,19 @@ const createBookingToDB = async (userId: string, payload: IBooking) => {
         }
     }
 
-    const result = await Booking.create(payload);
+    const result = await Booking.create({
+        ...payload,
+        status: BOOKING_STATUS.REGISTERED,
+    });
+
+    if (payload.paymentMethod === 'handCash') {
+        await Booking.findByIdAndUpdate(result._id, {
+            $set: {
+                status: BOOKING_STATUS.PENDING,
+                paymentStatus: PAYMENT_STATUS.FAILED, // Using FAILED as handCash as per user diff
+            },
+        });
+    }
 
     // Increment booking count in service
     await Service.findByIdAndUpdate(payload.service, {
@@ -155,14 +168,14 @@ const createBookingToDB = async (userId: string, payload: IBooking) => {
     });
 
     // Send Notification to Provider
-    const user = await User.findById(userId).select('fullName');
-    const userName = user?.fullName || 'A customer';
+    const userEmail = await User.findById(userId).select('fullName');
+    const userName = userEmail?.fullName || 'A customer';
 
     await NotificationService.insertNotification({
         receiver: service.provider,
         title: "New Booking",
         message: `You have received a new booking from ${userName}`,
-        type: "ADMIN", // Assuming 'ADMIN' type is used for general business notifications based on model, or adjust if 'BOOKING' added to enum
+        type: "ADMIN",
         referenceId: result._id as any,
     });
 

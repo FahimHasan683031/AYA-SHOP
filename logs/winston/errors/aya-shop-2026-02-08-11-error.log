@@ -1,3 +1,0 @@
-{Sun Feb 08 2026 11:40:38} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - PATCH /api/v1/user/business-profile 404 - 27.001 ms
-{Sun Feb 08 2026 11:43:45} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - POST /api/v1/auth/login 400 - 51.370 ms
-{Sun Feb 08 2026 11:44:20} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - POST /api/v1/auth/login 400 - 2.395 ms

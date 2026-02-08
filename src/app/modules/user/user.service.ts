@@ -111,6 +111,16 @@ const insertAdminIntoDB = async () => {
             role: USER_ROLES.ADMIN,
             verified: true,
             status: USER_STATUS.ACTIVE,
+            authentication: {
+                oneTimeCode: "",
+                expiresAt: null,
+                latestRequestAt: new Date(),
+                requestCount: 0,
+                authType: 'createAccount',
+                restrictionLeftAt: null,
+                resetPassword: false,
+                wrongLoginAttempts: 0,
+            }
         });
         logger.info('✔ Admin user seeded successfully');
     } else {
@@ -141,7 +151,7 @@ const updateBusinessProfile = async (
 
     const updatedUser = await User.findOneAndUpdate(
         { _id: user.authId, status: { $ne: USER_STATUS.DELETED } },
-        { $set: { business: { ...isExistUser.business, ...payload } } },
+        { $set: { business: { ...(isExistUser.business || {}), ...payload } } },
         { new: true },
     )
 

@@ -9,7 +9,7 @@ const router = Router();
 
 
 router.post(
-    "/checkout-session/:referenceId",
+    "/checkout-session/:bookingId",
     PaymentController.createCheckoutSession
 )
 

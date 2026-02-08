@@ -34,12 +34,17 @@ const BookingSchema = new Schema<IBooking>(
         status: {
             type: String,
             enum: Object.values(BOOKING_STATUS),
-            default: BOOKING_STATUS.PENDING,
+            default: BOOKING_STATUS.REGISTERED,
         },
         paymentStatus: {
             type: String,
             enum: Object.values(PAYMENT_STATUS),
             default: PAYMENT_STATUS.PENDING,
+        },
+        paymentMethod: {
+            type: String,
+            enum: ['handCash', 'online'],
+            required: true,
         },
         totalAmount: {
             type: Number,

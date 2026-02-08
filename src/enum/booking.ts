@@ -1,4 +1,5 @@
 export enum BOOKING_STATUS {
+    REGISTERED = "registered",
     PENDING = "pending",
     CONFIRMED = "confirmed",
     COMPLETED = "completed",
@@ -8,5 +9,5 @@ export enum BOOKING_STATUS {
 export enum PAYMENT_STATUS {
     PENDING = "pending",
     PAID = "paid",
-    FAILED = "failed",
+    FAILED = "handCash",
 }

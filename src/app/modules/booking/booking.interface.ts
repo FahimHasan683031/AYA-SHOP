@@ -10,6 +10,7 @@ export type IBooking = {
     endTime: string;
     status: BOOKING_STATUS;
     paymentStatus: PAYMENT_STATUS;
+    paymentMethod: 'handCash' | 'online';
     totalAmount: number;
     transactionId?: string;
     notes?: string;

@@ -4,9 +4,15 @@ import { IService } from "./service.interface";
 import { Service } from "./service.model";
 import { Booking } from "../booking/booking.model";
 import QueryBuilder from "../../builder/QueryBuilder";
+import { CategoryModel } from "../category/category.model";
+
 
 const createServiceToDB = async (providerId: string, payload: IService) => {
     payload.provider = providerId as any;
+    const isExistCategory = await CategoryModel.findById(payload.category);
+    if (!isExistCategory) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Category not found");
+    }
     const result = await Service.create(payload);
     return result;
 };

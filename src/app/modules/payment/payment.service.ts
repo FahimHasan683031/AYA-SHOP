@@ -2,12 +2,24 @@ import QueryBuilder from "../../builder/QueryBuilder";
 import { IPayment } from "./payment.interface";
 import { Payment } from "./payment.model";
 import { createPaymentSession } from "../../../stripe/createPaymentSession";
-import config from "../../../config";
 import { JwtPayload } from "jsonwebtoken";
+import { Booking } from "../booking/booking.model";
+import { StatusCodes } from "http-status-codes";
+import ApiError from "../../../errors/ApiError";
 
 // Create seassion
-const creatSession = async (user: JwtPayload, referenceId: string, amount: number) => {
-  const url = await createPaymentSession(user, amount, referenceId);
+const creatSession = async (user: JwtPayload, bookingId: string, amount?: number) => {
+  let finalAmount = amount;
+
+  if (!finalAmount) {
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Booking not found");
+    }
+    finalAmount = booking.totalAmount;
+  }
+
+  const url = await createPaymentSession(user, finalAmount, bookingId);
 
   return { url }
 }

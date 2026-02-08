@@ -14,7 +14,7 @@ import bcrypt from "bcrypt";
 
 const handleLoginLogic = async (payload: ILoginData, isUserExist: IUser): Promise<IAuthResponse> => {
   const { authentication, verified, status, password } = isUserExist
-  const { restrictionLeftAt, wrongLoginAttempts } = authentication
+  const { restrictionLeftAt, wrongLoginAttempts } = authentication || { restrictionLeftAt: null, wrongLoginAttempts: 0 }
 
   if (!verified) {
     //send otp to user

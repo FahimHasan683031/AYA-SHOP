@@ -1,0 +1,55 @@
+{Sun Feb 08 2026 12:06:38} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 200 - 1.862 ms
+{Sun Feb 08 2026 12:06:42} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 304 - 0.560 ms
+{Sun Feb 08 2026 12:07:01} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 304 - 0.615 ms
+{Sun Feb 08 2026 12:07:02} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 304 - 0.443 ms
+{Sun Feb 08 2026 12:07:02} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 304 - 0.581 ms
+{Sun Feb 08 2026 12:07:02} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 304 - 0.550 ms
+{Sun Feb 08 2026 12:07:02} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 304 - 0.424 ms
+{Sun Feb 08 2026 12:07:26} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 304 - 0.848 ms
+{Sun Feb 08 2026 12:07:26} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 304 - 0.365 ms
+{Sun Feb 08 2026 12:07:27} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 304 - 0.324 ms
+{Sun Feb 08 2026 12:07:27} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 304 - 0.313 ms
+{Sun Feb 08 2026 12:07:27} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 304 - 0.299 ms
+{Sun Feb 08 2026 12:07:27} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 304 - 0.271 ms
+{Sun Feb 08 2026 12:09:50} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 08 2026 12:09:50} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 08 2026 12:09:50} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 08 2026 12:09:50} [AYA SHOP 🚀] info: ℹ Admin user already exists
+{Sun Feb 08 2026 12:10:39} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /api/v1/auth/login 200 - 240.320 ms
+{Sun Feb 08 2026 12:16:10} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 08 2026 12:16:10} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 08 2026 12:16:10} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 08 2026 12:16:11} [AYA SHOP 🚀] info: ✔ Admin user seeded successfully
+{Sun Feb 08 2026 12:16:14} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /api/v1/auth/admin-login 200 - 222.638 ms
+{Sun Feb 08 2026 12:20:39} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /api/v1/category/create 201 - 115.419 ms
+{Sun Feb 08 2026 12:20:51} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET /api/v1/category 200 - 10.154 ms
+{Sun Feb 08 2026 12:22:32} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - PATCH /api/v1/user/business-profile 200 - 14.431 ms
+{Sun Feb 08 2026 12:22:51} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - PATCH /api/v1/user/business-profile 200 - 10.960 ms
+{Sun Feb 08 2026 12:39:30} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 08 2026 12:39:30} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 08 2026 12:39:30} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 08 2026 12:39:30} [AYA SHOP 🚀] info: ℹ Admin user already exists
+{Sun Feb 08 2026 12:39:32} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 08 2026 12:39:32} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 08 2026 12:39:32} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 08 2026 12:39:32} [AYA SHOP 🚀] info: ℹ Admin user already exists
+{Sun Feb 08 2026 12:39:34} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 08 2026 12:39:34} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 08 2026 12:39:34} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 08 2026 12:39:34} [AYA SHOP 🚀] info: ℹ Admin user already exists
+{Sun Feb 08 2026 12:39:37} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 08 2026 12:39:37} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 08 2026 12:39:37} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 08 2026 12:39:37} [AYA SHOP 🚀] info: ℹ Admin user already exists
+{Sun Feb 08 2026 12:39:38} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 08 2026 12:39:38} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 08 2026 12:39:38} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 08 2026 12:39:38} [AYA SHOP 🚀] info: ℹ Admin user already exists
+{Sun Feb 08 2026 12:39:40} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 08 2026 12:39:40} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 08 2026 12:39:40} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 08 2026 12:39:40} [AYA SHOP 🚀] info: ℹ Admin user already exists
+{Sun Feb 08 2026 12:39:45} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 08 2026 12:39:45} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 08 2026 12:39:45} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 08 2026 12:39:45} [AYA SHOP 🚀] info: ℹ Admin user already exists
