@@ -18,7 +18,7 @@ const createServiceToDB = async (providerId: string, payload: IService) => {
 };
 
 const getAllServicesFromDB = async (query: Record<string, unknown>) => {
-    const serviceQuery = new QueryBuilder(Service.find().populate("category provider"), query)
+    const serviceQuery = new QueryBuilder(Service.find(), query)
         .search(["name", "description"])
         .filter()
         .sort()

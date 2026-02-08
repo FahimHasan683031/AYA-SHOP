@@ -1,0 +1,9 @@
+{Sun Feb 08 2026 15:00:13} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - PATCH /api/v1/service/698846191039ad8f98341fcb 404 - 3.900 ms
+{Sun Feb 08 2026 15:00:21} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - PATCH /api/v1/service/698846191039ad8f98341fcb 403 - 2.962 ms
+{Sun Feb 08 2026 15:00:32} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - PATCH /api/v1/service/698846191039ad8f98341fcb 403 - 6.362 ms
+{Sun Feb 08 2026 15:01:45} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - PATCH /api/v1/service/698846191039ad8f98341fcb 400 - 2.402 ms
+{Sun Feb 08 2026 15:02:26} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - PATCH /api/v1/service/698846191039ad8f98341fcb 403 - 95.730 ms
+{Sun Feb 08 2026 15:02:54} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - GET /api/v1/service/698846191039ad8f98341fcb/availability?date=2026-02-23 404 - 3.208 ms
+{Sun Feb 08 2026 15:10:59} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - GET /api/v1/user 403 - 1.799 ms
+{Sun Feb 08 2026 15:11:43} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - GET /api/v1/user 403 - 1.646 ms
+{Sun Feb 08 2026 15:26:57} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - GET /api/v1/user/698802bc8415b9120376c441 404 - 2.820 ms

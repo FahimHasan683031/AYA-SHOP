@@ -16,19 +16,32 @@ router.post(
     ServiceController.createService
 );
 
-router.get("/", ServiceController.getAllServices);
+router.get("/",
+    auth(USER_ROLES.BUSINESS, USER_ROLES.ADMIN, USER_ROLES.CLIENT),
+    ServiceController.getAllServices
+);
 
-router.get("/:id", ServiceController.getSingleService);
+router.get("/:id",
+    auth(USER_ROLES.BUSINESS, USER_ROLES.ADMIN, USER_ROLES.CLIENT),
+    ServiceController.getSingleService
+);
 
-router.get("/:id/availability", ServiceController.getAvailableSlots);
+router.get("/:id/availability",
+    auth(USER_ROLES.BUSINESS, USER_ROLES.ADMIN, USER_ROLES.CLIENT),
+    ServiceController.getAvailableSlots
+);
 
 router.patch(
     "/:id",
     auth(USER_ROLES.BUSINESS),
+    fileAndBodyProcessorUsingDiskStorage(),
     validateRequest(ServiceValidation.updateServiceSchema),
     ServiceController.updateService
 );
 
-router.delete("/:id", auth(USER_ROLES.BUSINESS), ServiceController.deleteService);
+router.delete("/:id",
+    auth(USER_ROLES.BUSINESS, USER_ROLES.ADMIN),
+    ServiceController.deleteService
+);
 
 export const ServiceRoutes = router;

@@ -18,7 +18,8 @@ router.get('/', auth(USER_ROLES.ADMIN), UserController.getAllUser);
 router.patch(
   '/profile',
   auth(USER_ROLES.CLIENT, USER_ROLES.BUSINESS, USER_ROLES.ADMIN),
-  fileUploadHandler(),
+  fileAndBodyProcessorUsingDiskStorage(),
+  validateRequest(UserValidations.userUpdateSchema),
   UserController.updateProfile,
 )
 
@@ -38,10 +39,16 @@ router.delete(
 )
 
 // get single user
-router.get('/:id', UserController.getSingleUser)
+router.get('/:id',
+  auth(USER_ROLES.ADMIN, USER_ROLES.BUSINESS, USER_ROLES.CLIENT),
+  UserController.getSingleUser
+)
 
 
 // delete user
-router.delete('/:id', auth(USER_ROLES.ADMIN), UserController.deleteUser)
+router.delete('/:id',
+  auth(USER_ROLES.ADMIN),
+  UserController.deleteUser
+)
 
 export const UserRoutes = router

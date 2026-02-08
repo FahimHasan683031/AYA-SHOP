@@ -19,12 +19,8 @@ export const userLoginSchema = z.object({
 
 export const userUpdateSchema = z.object({
   body: z.object({
-    email: z.string().email("Invalid email address").trim().toLowerCase().optional(),
     fullName: z.string().min(1, "Full name is required").optional(),
     image: z.string().optional(),
-    password: z.string().min(6, "Password must be at least 6 characters").optional(),
-    status: z.nativeEnum(USER_STATUS).optional(),
-    verified: z.boolean().optional()
   })
 });
 
