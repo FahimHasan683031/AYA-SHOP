@@ -10,13 +10,15 @@ const createBookingSchema = z.object({
         endTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, {
             message: 'Invalid time format. Expected "HH:mm" in 24-hour format.',
         }),
+        paymentMethod: z.enum(['handCash', 'online']),
         notes: z.string().optional(),
     }),
 });
 
 const updateBookingStatusSchema = z.object({
     body: z.object({
-        status: z.enum(["pending", "confirmed", "completed", "cancelled"]),
+        status: z.enum([ "confirmed", "completed", "cancelled"]),
+        reason: z.string().optional(),
     }),
 });
 

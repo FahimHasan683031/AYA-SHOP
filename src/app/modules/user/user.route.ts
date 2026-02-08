@@ -4,7 +4,6 @@ import auth from '../../middleware/auth'
 import validateRequest from '../../middleware/validateRequest'
 import { UserValidations } from './user.validation'
 import { USER_ROLES } from '../../../enum/user'
-import fileUploadHandler from '../../middleware/fileUploadHandler'
 import { fileAndBodyProcessorUsingDiskStorage } from '../../middleware/processReqBody'
 
 const router = express.Router()

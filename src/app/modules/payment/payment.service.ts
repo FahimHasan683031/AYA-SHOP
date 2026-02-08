@@ -8,20 +8,20 @@ import { StatusCodes } from "http-status-codes";
 import ApiError from "../../../errors/ApiError";
 
 // Create seassion
-const creatSession = async (user: JwtPayload, bookingId: string, amount?: number) => {
-  let finalAmount = amount;
+const creatSession = async (user: JwtPayload, bookingId: string) => {
 
-  if (!finalAmount) {
+
+
     const booking = await Booking.findById(bookingId);
     if (!booking) {
       throw new ApiError(StatusCodes.NOT_FOUND, "Booking not found");
     }
-    finalAmount = booking.totalAmount;
-  }
+    const finalAmount = booking.totalAmount;
 
-  const url = await createPaymentSession(user, finalAmount, bookingId);
 
-  return { url }
+    const url = await createPaymentSession(user, finalAmount, bookingId);
+
+    return { url }
 }
 
 // create payment

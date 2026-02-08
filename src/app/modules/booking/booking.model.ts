@@ -36,6 +36,9 @@ const BookingSchema = new Schema<IBooking>(
             enum: Object.values(BOOKING_STATUS),
             default: BOOKING_STATUS.REGISTERED,
         },
+        reason: {
+            type: String,
+        },
         paymentStatus: {
             type: String,
             enum: Object.values(PAYMENT_STATUS),

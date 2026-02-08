@@ -10,6 +10,7 @@ const router = Router();
 
 router.post(
     "/checkout-session/:bookingId",
+    auth(USER_ROLES.CLIENT),
     PaymentController.createCheckoutSession
 )
 

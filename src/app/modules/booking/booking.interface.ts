@@ -13,5 +13,6 @@ export type IBooking = {
     paymentMethod: 'handCash' | 'online';
     totalAmount: number;
     transactionId?: string;
+    reason?: string;
     notes?: string;
 };
