@@ -63,24 +63,10 @@ const deleteMessage = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateMoneyRequestStatus = catchAsync(async (req: Request, res: Response) => {
-  const { messageId } = req.params;
-  const { status } = req.body;
-  const result = await MessageService.updateMoneyRequestStatusToDB(messageId, req.user, status);
-
-  sendResponse(res, {
-    success: true,
-    statusCode: StatusCodes.OK,
-    message: `Money request ${status} successfully`,
-    data: result
-  });
-});
-
 export const MessageController = {
   sendMessage,
   getMessage,
   updateMessage,
   getUnreadCount,
   deleteMessage,
-  updateMoneyRequestStatus
 };

@@ -16,7 +16,7 @@ const sendMessageToDB = async (payload: any): Promise<IMessage> => {
   // Initialize readBy with sender's ID
   payload.readBy = [payload.sender];
 
-  console.log({payload});
+  console.log({ payload });
 
 
   const isExistChat = await Chat.findById(payload.chatId);
@@ -225,5 +225,4 @@ export const MessageService = {
   getUnreadCountForChat,
   getTotalUnreadCount,
   deleteMessageFromDB,
-  updateMoneyRequestStatusToDB
 };

@@ -31,18 +31,6 @@ const messageSchema = new Schema<IMessage, MessageModel>(
       type: Schema.Types.ObjectId,
       ref: 'User'
     }],
-    amount: {
-      type: Number,
-      required: false
-    },
-    moneyRequestStatus: {
-      type: String,
-      enum: ['pending', 'accepted', 'rejected'],
-      required: false,
-      default: function (this: any) {
-        return this.type === MESSAGE.MoneyRequest ? 'pending' : undefined;
-      }
-    }
   },
   {
     timestamps: true,
