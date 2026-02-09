@@ -7,6 +7,9 @@ import { Service } from "../service/service.model";
 import { User } from "../user/user.model";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { NotificationService } from "../notification/notification.service";
+import { initiateStripeTransfer } from "../../../stripe/stripeTransfer";
+import { initiateStripeRefund } from "../../../stripe/stripeRefund";
+import { logger } from "../../../shared/logger";
 
 const createBookingToDB = async (userId: string, payload: IBooking) => {
     const service = await Service.findById(payload.service);
@@ -212,14 +215,43 @@ const getAllBookingsFromDB = async (user: any, query: Record<string, unknown>) =
     };
 };
 
-const updateBookingStatusInDB = async (id: string, providerId: string, status: string) => {
+const updateBookingStatusInDB = async (id: string, user: any, status: string) => {
     const booking = await Booking.findById(id);
     if (!booking) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Booking not found");
     }
 
-    if (booking.provider.toString() !== providerId) {
-        throw new ApiError(StatusCodes.FORBIDDEN, "You are not authorized to update this booking");
+    // Role-based authorization and status restriction
+    if (user.role === 'client') {
+        if (booking.user.toString() !== user.authId) {
+            throw new ApiError(StatusCodes.FORBIDDEN, "You are not authorized to update this booking");
+        }
+
+        if (status === BOOKING_STATUS.CANCELLED) {
+            if (booking.status !== BOOKING_STATUS.PENDING && booking.status !== BOOKING_STATUS.REGISTERED) {
+                throw new ApiError(StatusCodes.BAD_REQUEST, "Clients can only cancel bookings in pending or registered status");
+            }
+        } else {
+            throw new ApiError(StatusCodes.FORBIDDEN, "Clients can only cancel their own bookings");
+        }
+    } else if (user.role === 'business') {
+        if (booking.provider.toString() !== user.authId) {
+            throw new ApiError(StatusCodes.FORBIDDEN, "You are not authorized to update this booking");
+        }
+
+        if (status === BOOKING_STATUS.CANCELLED) {
+            if (booking.status !== BOOKING_STATUS.PENDING) {
+                throw new ApiError(StatusCodes.BAD_REQUEST, "Business side can only cancel bookings in pending status");
+            }
+        }
+    } else if (user.role === 'admin') {
+        if (status === BOOKING_STATUS.CANCELLED) {
+            if (booking.status === BOOKING_STATUS.COMPLETED) {
+                throw new ApiError(StatusCodes.BAD_REQUEST, "Admin cannot cancel a completed booking");
+            }
+        }
+    } else {
+        throw new ApiError(StatusCodes.FORBIDDEN, "Unauthorized role");
     }
 
     const result = await Booking.findByIdAndUpdate(
@@ -227,6 +259,30 @@ const updateBookingStatusInDB = async (id: string, providerId: string, status: s
         { status },
         { new: true, runValidators: true }
     );
+
+    // If status is completed and payment was online, trigger transfer
+    if (status === BOOKING_STATUS.COMPLETED && result?.paymentMethod === 'online' && result?.paymentStatus === PAYMENT_STATUS.PAID) {
+        const provider = await User.findById(result.provider);
+        if (provider?.business?.stripeAccountId && provider?.business?.stripeOnboardingCompleted) {
+            try {
+                await initiateStripeTransfer(result.totalAmount, provider.business.stripeAccountId, id);
+            } catch (error) {
+                logger.error(`Failed to transfer funds for booking ${id}:`, error);
+                // We might want to handle this differently, e.g., queue it or notify admin
+            }
+        }
+    }
+
+    // If status is cancelled and payment was online, trigger refund
+    if (status === BOOKING_STATUS.CANCELLED && result?.paymentMethod === 'online' && result?.paymentStatus === PAYMENT_STATUS.PAID && result?.transactionId) {
+        try {
+            await initiateStripeRefund(result.transactionId, id);
+            // Optionally update paymentStatus to 'refunded' if it exists in enum
+        } catch (error) {
+            logger.error(`Failed to refund for booking ${id}:`, error);
+        }
+    }
+
     return result;
 };
 

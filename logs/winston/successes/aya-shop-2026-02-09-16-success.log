@@ -1,0 +1,38 @@
+{Mon Feb 09 2026 16:02:51} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET /api/v1/payment/stripe-connect/refresh?userId=69884b96a6bdc58688c25bdc 302 - 1984.941 ms
+{Mon Feb 09 2026 16:03:09} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /api/v1/payment/stripe-connect 200 - 699.142 ms
+{Mon Feb 09 2026 16:03:14} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /api/v1/payment/stripe-connect 200 - 665.143 ms
+{Mon Feb 09 2026 16:10:42} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET /api/v1/payment/stripe-connect/return?userId=69884b96a6bdc58688c25bdc 302 - 2101.163 ms
+{Mon Feb 09 2026 16:11:32} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET /api/v1/user/me 200 - 26.707 ms
+{Mon Feb 09 2026 16:13:56} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Mon Feb 09 2026 16:13:56} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Mon Feb 09 2026 16:13:56} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Mon Feb 09 2026 16:13:56} [AYA SHOP 🚀] info: ℹ Admin user already exists
+{Mon Feb 09 2026 16:16:28} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET /api/v1/payment/stripe-connect/status 200 - 1161.818 ms
+{Mon Feb 09 2026 16:18:27} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Mon Feb 09 2026 16:18:27} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Mon Feb 09 2026 16:18:27} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Mon Feb 09 2026 16:18:27} [AYA SHOP 🚀] info: ℹ Admin user already exists
+{Mon Feb 09 2026 16:18:53} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET /api/v1/payment/stripe-connect/status 200 - 2070.568 ms
+{Mon Feb 09 2026 16:20:00} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET /api/v1/service 200 - 53.662 ms
+{Mon Feb 09 2026 16:21:13} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /api/v1/service 200 - 70.578 ms
+{Mon Feb 09 2026 16:21:39} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET /api/v1/service/6989b5197c7b58eb09ae1378/availability?date=2026-02-28 200 - 109.953 ms
+{Mon Feb 09 2026 16:21:49} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET /api/v1/service/6989b5197c7b58eb09ae1378/availability?date=2026-02-28 200 - 11.468 ms
+{Mon Feb 09 2026 16:26:28} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /api/v1/booking 200 - 89.617 ms
+{Mon Feb 09 2026 16:28:25} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /api/v1/payment/checkout-session/6989b6547c7b58eb09ae138a 200 - 869.261 ms
+{Mon Feb 09 2026 16:29:43} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET / 304 - 41.702 ms
+{Mon Feb 09 2026 16:30:31} [AYA SHOP 🚀] info: ⚠️ Unhandled event type: charge.succeeded
+{Mon Feb 09 2026 16:30:31} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /webhook 200 - 15.361 ms
+{Mon Feb 09 2026 16:30:31} [AYA SHOP 🚀] info: ⚠️ Unhandled event type: payment_intent.succeeded
+{Mon Feb 09 2026 16:30:31} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /webhook 200 - 3.878 ms
+{Mon Feb 09 2026 16:30:31} [AYA SHOP 🚀] info: ✅ Checkout completed:
+{Mon Feb 09 2026 16:30:31} [AYA SHOP 🚀] info: ⚠️ Unhandled event type: payment_intent.created
+{Mon Feb 09 2026 16:30:31} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /webhook 200 - 0.936 ms
+{Mon Feb 09 2026 16:30:31} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /webhook 200 - 56.592 ms
+{Mon Feb 09 2026 16:30:33} [AYA SHOP 🚀] info: ⚠️ Unhandled event type: charge.updated
+{Mon Feb 09 2026 16:30:33} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /webhook 200 - 1.930 ms
+{Mon Feb 09 2026 16:32:31} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET /api/v1/booking 200 - 96.539 ms
+{Mon Feb 09 2026 16:34:41} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - PATCH /api/v1/booking/6989b6547c7b58eb09ae138a/status - - - ms
+{Mon Feb 09 2026 16:35:24} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - PATCH /api/v1/booking/6989b6547c7b58eb09ae138a/status 200 - 34.014 ms
+{Mon Feb 09 2026 16:36:49} [AYA SHOP 🚀] error: ❌ Transfer failed for booking 6989b6547c7b58eb09ae138a: You have insufficient available funds in your Stripe account. Try adding funds directly to your available balance by creating Charges using the 4000000000000077 test card. See: https://stripe.com/docs/testing#available-balance
+{Mon Feb 09 2026 16:36:49} [AYA SHOP 🚀] error: Failed to transfer funds for booking 6989b6547c7b58eb09ae138a: You have insufficient available funds in your Stripe account. Try adding funds directly to your available balance by creating Charges using the 4000000000000077 test card. See: https://stripe.com/docs/testing#available-balance
+{Mon Feb 09 2026 16:36:49} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - PATCH /api/v1/booking/6989b6547c7b58eb09ae138a/status 200 - 2124.013 ms

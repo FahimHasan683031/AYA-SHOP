@@ -59,6 +59,8 @@ export type IUser = {
         instagram?: string;
         twitter?: string;
         businessHours?: IBusinessHours;
+        stripeAccountId?: string;
+        stripeOnboardingCompleted?: boolean;
     };
 };
 

@@ -22,7 +22,7 @@ router.get(
 
 router.patch(
     "/:id/status",
-    auth(USER_ROLES.BUSINESS, USER_ROLES.CLIENT),
+    auth(USER_ROLES.BUSINESS, USER_ROLES.CLIENT, USER_ROLES.ADMIN),
     validateRequest(BookingValidation.updateBookingStatusSchema),
     BookingController.updateBookingStatus
 );

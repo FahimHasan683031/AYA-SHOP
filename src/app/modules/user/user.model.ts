@@ -109,6 +109,8 @@ const UserSchema = new Schema(
                     saturday: { from: { type: String }, to: { type: String } },
                     sunday: { from: { type: String }, to: { type: String } },
                 },
+                stripeAccountId: { type: String },
+                stripeOnboardingCompleted: { type: Boolean, default: false },
             },
             required: false,
             default: undefined

@@ -14,6 +14,28 @@ router.post(
     PaymentController.createCheckoutSession
 )
 
+router.post(
+    "/stripe-connect",
+    auth(USER_ROLES.BUSINESS),
+    PaymentController.initiateStripeConnect
+)
+
+router.get(
+    "/stripe-connect/status",
+    auth(USER_ROLES.BUSINESS),
+    PaymentController.checkOnboardingStatus
+)
+
+router.get(
+    "/stripe-connect/refresh",
+    PaymentController.confirmStripeConnect
+)
+
+router.get(
+    "/stripe-connect/return",
+    PaymentController.confirmStripeConnect
+)
+
 router.get(
     "/",
     auth(USER_ROLES.ADMIN),

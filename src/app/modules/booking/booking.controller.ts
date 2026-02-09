@@ -28,7 +28,7 @@ const getAllBookings = catchAsync(async (req: Request, res: Response) => {
 const updateBookingStatus = catchAsync(async (req: Request, res: Response) => {
     const result = await BookingService.updateBookingStatusInDB(
         req.params.id,
-        (req as any).user._id,
+        req.user,
         req.body.status
     );
     sendResponse(res, {
