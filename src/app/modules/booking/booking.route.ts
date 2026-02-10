@@ -20,6 +20,11 @@ router.get(
     BookingController.getAllBookings
 );
 
+router.get(
+    "/:id",
+    auth(USER_ROLES.CLIENT, USER_ROLES.BUSINESS, USER_ROLES.ADMIN),
+    BookingController.getSingelBooking
+);
 router.patch(
     "/:id/status",
     auth(USER_ROLES.BUSINESS, USER_ROLES.CLIENT, USER_ROLES.ADMIN),

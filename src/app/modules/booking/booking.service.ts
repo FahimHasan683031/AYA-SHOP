@@ -215,6 +215,14 @@ const getAllBookingsFromDB = async (user: any, query: Record<string, unknown>) =
     };
 };
 
+const getSingelBookingFromDB = async (id: string) => {
+    const booking = await Booking.findById(id);
+    if (!booking) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Booking not found");
+    }
+    return booking;
+};
+
 const updateBookingStatusInDB = async (id: string, user: any, status: string) => {
     const booking = await Booking.findById(id);
     if (!booking) {
@@ -231,8 +239,12 @@ const updateBookingStatusInDB = async (id: string, user: any, status: string) =>
             if (booking.status !== BOOKING_STATUS.PENDING && booking.status !== BOOKING_STATUS.REGISTERED) {
                 throw new ApiError(StatusCodes.BAD_REQUEST, "Clients can only cancel bookings in pending or registered status");
             }
+        } else if (status === BOOKING_STATUS.COMPLETED) {
+            if (booking.status !== BOOKING_STATUS.CONFIRMED && booking.status !== BOOKING_STATUS.PENDING) {
+                throw new ApiError(StatusCodes.BAD_REQUEST, "Booking must be in pending or confirmed status to be completed");
+            }
         } else {
-            throw new ApiError(StatusCodes.FORBIDDEN, "Clients can only cancel their own bookings");
+            throw new ApiError(StatusCodes.FORBIDDEN, "Clients can only cancel or complete their own bookings");
         }
     } else if (user.role === 'business') {
         if (booking.provider.toString() !== user.authId) {
@@ -243,6 +255,8 @@ const updateBookingStatusInDB = async (id: string, user: any, status: string) =>
             if (booking.status !== BOOKING_STATUS.PENDING) {
                 throw new ApiError(StatusCodes.BAD_REQUEST, "Business side can only cancel bookings in pending status");
             }
+        } else if (status === BOOKING_STATUS.COMPLETED) {
+            throw new ApiError(StatusCodes.FORBIDDEN, "Business side cannot mark a booking as completed. Only clients or admins can do this.");
         }
     } else if (user.role === 'admin') {
         if (status === BOOKING_STATUS.CANCELLED) {
@@ -289,5 +303,6 @@ const updateBookingStatusInDB = async (id: string, user: any, status: string) =>
 export const BookingService = {
     createBookingToDB,
     getAllBookingsFromDB,
+    getSingelBookingFromDB,
     updateBookingStatusInDB,
 };
