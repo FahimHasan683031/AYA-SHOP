@@ -10,6 +10,8 @@ import { NotificationService } from "../notification/notification.service";
 import { initiateStripeTransfer } from "../../../stripe/stripeTransfer";
 import { initiateStripeRefund } from "../../../stripe/stripeRefund";
 import { logger } from "../../../shared/logger";
+import stripe from "../../../config/stripe";
+import Stripe from "stripe";
 
 const createBookingToDB = async (userId: string, payload: IBooking) => {
     const service = await Service.findById(payload.service);
@@ -274,24 +276,80 @@ const updateBookingStatusInDB = async (id: string, user: any, status: string) =>
         { new: true, runValidators: true }
     );
 
-    // If status is completed and payment was online, trigger transfer
-    if (status === BOOKING_STATUS.COMPLETED && result?.paymentMethod === 'online' && result?.paymentStatus === PAYMENT_STATUS.PAID) {
+    // If status is completed and online payment was paid, trigger transfer
+    if (
+        status === BOOKING_STATUS.COMPLETED &&
+        result?.paymentMethod === "online" &&
+        result?.paymentStatus === PAYMENT_STATUS.PAID &&
+        !result.isTransferred
+    ) {
         const provider = await User.findById(result.provider);
+
         if (provider?.business?.stripeAccountId && provider?.business?.stripeOnboardingCompleted) {
             try {
-                await initiateStripeTransfer(result.totalAmount, provider.business.stripeAccountId, id);
+                // Calculate payout: 
+                // Calculate payout: 
+                // totalAmount is in GBP (gross). stripeFeeAmount is in cents.
+                const totalInCents = result.totalAmount * 100;
+                let stripeFee = result.stripeFeeAmount || 0;
+
+                // If fee is 0 and we have a transaction ID, try to fetch it from Stripe
+                if (stripeFee === 0 && result.transactionId) {
+                    try {
+                        const charge = await stripe.charges.retrieve(result.transactionId, {
+                            expand: ['balance_transaction']
+                        }).catch(async () => {
+                            // Fallback: if transactionId is a PI, retrieve it
+                            const pi = await stripe.paymentIntents.retrieve(result.transactionId!);
+                            if (pi.latest_charge) {
+                                const chargeId = typeof pi.latest_charge === 'string' ? pi.latest_charge : pi.latest_charge.id;
+                                return await stripe.charges.retrieve(chargeId, { expand: ['balance_transaction'] });
+                            }
+                            return null;
+                        });
+
+                        if (charge?.balance_transaction) {
+                            const bt = charge.balance_transaction as Stripe.BalanceTransaction;
+                            stripeFee = bt.fee;
+                            // Optionally update the booking with the found fee
+                            await Booking.findByIdAndUpdate(id, { stripeFeeAmount: stripeFee });
+                        }
+                    } catch (err) {
+                        logger.error(`Failed to fetch Stripe fee for booking ${id}:`, err);
+                    }
+                }
+
+                // Payout = Gross - Fee (0% platform fee)
+                const netPayoutInCents = totalInCents - stripeFee;
+                const payoutAmount = netPayoutInCents / 100;
+
+                if (payoutAmount > 0) {
+                    await initiateStripeTransfer(
+                        payoutAmount,
+                        provider.business.stripeAccountId,
+                        id
+                    );
+
+                    await Booking.findByIdAndUpdate(id, {
+                        $set: { isTransferred: true }
+                    });
+                }
             } catch (error) {
                 logger.error(`Failed to transfer funds for booking ${id}:`, error);
-                // We might want to handle this differently, e.g., queue it or notify admin
             }
         }
     }
+
+
 
     // If status is cancelled and payment was online, trigger refund
     if (status === BOOKING_STATUS.CANCELLED && result?.paymentMethod === 'online' && result?.paymentStatus === PAYMENT_STATUS.PAID && result?.transactionId) {
         try {
             await initiateStripeRefund(result.transactionId, id);
-            // Optionally update paymentStatus to 'refunded' if it exists in enum
+
+            await Booking.findByIdAndUpdate(id, {
+                $set: { paymentStatus: PAYMENT_STATUS.REFUNDED }
+            });
         } catch (error) {
             logger.error(`Failed to refund for booking ${id}:`, error);
         }

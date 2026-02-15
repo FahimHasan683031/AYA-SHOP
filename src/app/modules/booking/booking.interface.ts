@@ -12,6 +12,8 @@ export type IBooking = {
     paymentStatus: PAYMENT_STATUS;
     paymentMethod: 'handCash' | 'online';
     totalAmount: number;
+    stripeFeeAmount?: number;
+    isTransferred?: boolean;
     transactionId?: string;
     reason?: string;
     notes?: string;

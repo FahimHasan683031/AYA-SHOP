@@ -1,2 +1,0 @@
-{Fri Jan 30 2026 01:48:09} [AYA SHOP 🐞] error: ::ffff:10.10.7.34 - POST /api/v1/auth/signup 400 - 648.069 ms
-{Fri Jan 30 2026 01:53:14} [AYA SHOP 🐞] error: ::ffff:10.10.7.34 - POST /api/v1/auth/verify-account 400 - 281.197 ms

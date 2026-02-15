@@ -1,4 +1,0 @@
-{Thu Jan 29 2026 00:37:13} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - GET /favicon.ico 404 - 0.869 ms
-{Thu Jan 29 2026 00:46:48} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /api/v1/auth/login 400 - 550.344 ms
-{Thu Jan 29 2026 00:50:37} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - GET /user/me 404 - 0.430 ms
-{Thu Jan 29 2026 00:50:59} [AYA SHOP 🐞] error: ::ffff:10.10.7.26 - POST /auth/signup 404 - 0.185 ms

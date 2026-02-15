@@ -15,6 +15,7 @@ const UserSchema = new Schema(
         password: {
             type: String,
             required: true,
+            select: 0
         },
         image: {
             type: String,
@@ -23,6 +24,7 @@ const UserSchema = new Schema(
         fullName: {
             type: String,
             required: true,
+
         },
         status: {
             type: String,

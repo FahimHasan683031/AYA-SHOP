@@ -53,6 +53,14 @@ const BookingSchema = new Schema<IBooking>(
             type: Number,
             required: true,
         },
+        stripeFeeAmount: {
+            type: Number,
+            default: 0,
+        },
+        isTransferred: {
+            type: Boolean,
+            default: false,
+        },
         transactionId: {
             type: String,
         },
