@@ -238,12 +238,14 @@ const updateBookingStatusInDB = async (id: string, user: any, status: string) =>
         }
 
         if (status === BOOKING_STATUS.CANCELLED) {
-            if (booking.status !== BOOKING_STATUS.PENDING && booking.status !== BOOKING_STATUS.REGISTERED) {
-                throw new ApiError(StatusCodes.BAD_REQUEST, "Clients can only cancel bookings in pending or registered status");
+            // Client can only cancel if status is PENDING
+            if (booking.status !== BOOKING_STATUS.PENDING) {
+                throw new ApiError(StatusCodes.BAD_REQUEST, "Clients can only cancel bookings in pending status");
             }
         } else if (status === BOOKING_STATUS.COMPLETED) {
-            if (booking.status !== BOOKING_STATUS.CONFIRMED && booking.status !== BOOKING_STATUS.PENDING) {
-                throw new ApiError(StatusCodes.BAD_REQUEST, "Booking must be in pending or confirmed status to be completed");
+            // Client can only complete if status is CONFIRMED (Accepted)
+            if (booking.status !== BOOKING_STATUS.CONFIRMED) {
+                throw new ApiError(StatusCodes.BAD_REQUEST, "Booking must be accepted (confirmed) before it can be completed");
             }
         } else {
             throw new ApiError(StatusCodes.FORBIDDEN, "Clients can only cancel or complete their own bookings");
@@ -254,16 +256,23 @@ const updateBookingStatusInDB = async (id: string, user: any, status: string) =>
         }
 
         if (status === BOOKING_STATUS.CANCELLED) {
+            // Business can only cancel if status is PENDING
             if (booking.status !== BOOKING_STATUS.PENDING) {
-                throw new ApiError(StatusCodes.BAD_REQUEST, "Business side can only cancel bookings in pending status");
+                throw new ApiError(StatusCodes.BAD_REQUEST, "Business can only cancel bookings in pending status");
+            }
+        } else if (status === BOOKING_STATUS.CONFIRMED) {
+            // Business can accept a booking (Pending -> Confirmed)
+            if (booking.status !== BOOKING_STATUS.PENDING) {
+                throw new ApiError(StatusCodes.BAD_REQUEST, "Only pending bookings can be accepted");
             }
         } else if (status === BOOKING_STATUS.COMPLETED) {
             throw new ApiError(StatusCodes.FORBIDDEN, "Business side cannot mark a booking as completed. Only clients or admins can do this.");
         }
     } else if (user.role === 'admin') {
         if (status === BOOKING_STATUS.CANCELLED) {
-            if (booking.status === BOOKING_STATUS.COMPLETED) {
-                throw new ApiError(StatusCodes.BAD_REQUEST, "Admin cannot cancel a completed booking");
+            // Admin can cancel if status is PENDING or CONFIRMED
+            if (booking.status !== BOOKING_STATUS.PENDING && booking.status !== BOOKING_STATUS.CONFIRMED) {
+                throw new ApiError(StatusCodes.BAD_REQUEST, "Admin can only cancel pending or accepted bookings");
             }
         }
     } else {
