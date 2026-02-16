@@ -54,18 +54,18 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
   });
 
   const IMAGE_MIME_TYPES = [
-    'image/jpeg', 
-    'image/jpg', 
-    'image/png', 
-    'image/gif', 
-    'image/webp', 
-    'image/avif', 
-    'image/bmp', 
-    'image/tiff', 
-    'image/svg+xml', 
-    'image/heic', 
-    'image/heif', 
-    'image/ico', 
+    'image/jpeg',
+    'image/jpg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'image/avif',
+    'image/bmp',
+    'image/tiff',
+    'image/svg+xml',
+    'image/heic',
+    'image/heif',
+    'image/ico',
     'image/x-icon',
     'image/vnd.microsoft.icon',
     'image/vnd.adobe.photoshop',
@@ -100,8 +100,8 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
         documents: ['application/pdf'],
         logo: IMAGE_MIME_TYPES,
         photos: IMAGE_MIME_TYPES,
-        primaryDocuments: ['application/pdf'],
-        secondaryDocuments: ['application/pdf'],
+        primaryDocuments: [...IMAGE_MIME_TYPES, 'application/pdf'],
+        secondaryDocuments: [...IMAGE_MIME_TYPES, 'application/pdf'],
       };
 
       const fieldType = file.fieldname as IFolderName;
@@ -132,7 +132,9 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
 
   return (req: Request, res: Response, next: NextFunction) => {
     upload(req, res, async (error) => {
-      if (error) return next(error);
+      if (error) {
+        return next(error);
+      }
 
       try {
         if (req.body?.data) {
@@ -190,7 +192,7 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
                     fs.unlinkSync(fullPath);
                     fs.renameSync(tempPath, fullPath);
                   } catch (err) {
-                    console.error(`Failed to optimize ${filePath}:`, err);
+                    // Ignore optimization errors
                   }
                 }
               }),

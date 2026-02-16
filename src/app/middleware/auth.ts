@@ -4,6 +4,8 @@ import { Secret } from 'jsonwebtoken'
 import config from '../../config'
 import { jwtHelper } from '../../helpers/jwtHelper'
 import ApiError from '../../errors/ApiError'
+import { USER_ROLES } from '../../enum/user'
+import { User } from '../modules/user/user.model'
 
 const auth =
     (...roles: string[]) =>
@@ -26,6 +28,15 @@ const auth =
                             config.jwt.jwt_secret as Secret,
                         )
 
+                        const isExistUser = await User.findById(verifyUser.authId)
+
+                        if (!isExistUser) {
+                            throw new ApiError(
+                                StatusCodes.NOT_FOUND,
+                                'User not found!'
+                            )
+                        }
+
                         // Set user to header
                         req.user = verifyUser
 
@@ -35,6 +46,41 @@ const auth =
                                 StatusCodes.FORBIDDEN,
                                 "You don't have permission to access this API",
                             )
+                        }
+
+
+
+                        if (verifyUser.role === USER_ROLES.BUSINESS) {
+                            const allowPaths = ['/api/v1/plan', '/api/v1/plan/create-checkout-session/:planId', "/api/v1/auth/add-phone"];
+
+                            const currentPath = (req.baseUrl + req.path).replace(/\/$/, "");
+
+                            const isPathAllowed = (currentPath: string, allowedPaths: string[]) => {
+                                return allowedPaths.some(allowedPath => {
+                                    const currentSegments = currentPath.split('/').filter(Boolean);
+                                    const allowedSegments = allowedPath.split('/').filter(Boolean);
+
+                                    if (currentSegments.length !== allowedSegments.length) return false;
+
+                                    return allowedSegments.every((segment, index) => {
+                                        return segment.startsWith(':') || segment === currentSegments[index];
+                                    });
+                                });
+                            };
+
+                            const isAllowed = isPathAllowed(currentPath, allowPaths);
+
+
+                            const isPendingOnboarding =
+                                !isExistUser.subscribe &&
+                                !isAllowed;
+
+                            if (isPendingOnboarding) {
+                                throw new ApiError(
+                                    StatusCodes.FORBIDDEN,
+                                    "You don't have permission to access this API",
+                                )
+                            }
                         }
 
                         next()

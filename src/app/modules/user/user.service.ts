@@ -132,7 +132,7 @@ const updateBusinessProfile = async (
     user: JwtPayload,
     payload: Partial<IUser['business']>
 ) => {
-    const isExistUser = await User.findById(user.authId)
+    const isExistUser = await User.findById(user.authId).lean()
 
     if (!isExistUser) {
         throw new ApiError(StatusCodes.NOT_FOUND, 'User not found or deleted.')

@@ -29,7 +29,7 @@ const UserSchema = new Schema(
         status: {
             type: String,
             enum: Object.values(USER_STATUS),
-            default: USER_STATUS.ACTIVE,
+            default: USER_STATUS.PENDING,
         },
         verified: {
             type: Boolean,
@@ -81,6 +81,9 @@ const UserSchema = new Schema(
         fcmToken: {
             type: String,
             default: "",
+        },
+        subscribe: {
+            type: Boolean
         },
         phone: {
             type: String,

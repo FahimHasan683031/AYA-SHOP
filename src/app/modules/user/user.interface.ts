@@ -38,6 +38,7 @@ export type IUser = {
     status: USER_STATUS;
     verified: boolean;
     role: USER_ROLES;
+    subscribe?: boolean;
     authentication: IAuthentication;
     fcmToken?: string;
     fullName: string;
