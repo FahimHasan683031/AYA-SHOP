@@ -12,6 +12,8 @@ type IFolderName =
   | 'documents'
   | 'logo'
   | 'photos'
+  | 'primaryDocuments'
+  | 'secondaryDocuments'
 
 interface ProcessedFiles {
   [key: string]: string | string[] | undefined
@@ -23,6 +25,8 @@ const uploadFields = [
   { name: 'documents', maxCount: 3 },
   { name: 'logo', maxCount: 1 },
   { name: 'photos', maxCount: 10 },
+  { name: 'primaryDocuments', maxCount: 5 },
+  { name: 'secondaryDocuments', maxCount: 5 },
 ] as const
 
 export const fileAndBodyProcessorUsingDiskStorage = () => {
@@ -49,6 +53,41 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
     },
   });
 
+  const IMAGE_MIME_TYPES = [
+    'image/jpeg', 
+    'image/jpg', 
+    'image/png', 
+    'image/gif', 
+    'image/webp', 
+    'image/avif', 
+    'image/bmp', 
+    'image/tiff', 
+    'image/svg+xml', 
+    'image/heic', 
+    'image/heif', 
+    'image/ico', 
+    'image/x-icon',
+    'image/vnd.microsoft.icon',
+    'image/vnd.adobe.photoshop',
+    'image/x-ms-bmp',
+    'image/x-tga',
+    'image/x-pcx',
+    'image/x-portable-pixmap',
+    'image/x-portable-graymap',
+    'image/x-portable-bitmap',
+    'image/x-cmu-raster',
+    'image/x-xbitmap',
+    'image/x-xpixmap',
+    'image/x-portable-anymap',
+    'image/x-pict',
+    'image/x-macpaint',
+    'image/x-quicktime',
+    'image/x-sgi',
+    'image/x-rgb',
+    'image/x-xwindowdump',
+    'image/x-xcf'
+  ];
+
   const fileFilter = (
     req: Request,
     file: Express.Multer.File,
@@ -56,11 +95,13 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
   ) => {
     try {
       const allowedTypes = {
-        image: ['image/jpeg', 'image/png', 'image/jpg'],
+        image: IMAGE_MIME_TYPES,
         media: ['video/mp4', 'audio/mpeg'],
         documents: ['application/pdf'],
-        logo: ['image/jpeg', 'image/png', 'image/jpg'],
-        photos: ['image/jpeg', 'image/png', 'image/jpg'],
+        logo: IMAGE_MIME_TYPES,
+        photos: IMAGE_MIME_TYPES,
+        primaryDocuments: ['application/pdf'],
+        secondaryDocuments: ['application/pdf'],
       };
 
       const fieldType = file.fieldname as IFolderName;
@@ -164,6 +205,8 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
           ...(processedFiles.logo && { logo: processedFiles.logo }),
           ...(processedFiles.image && { image: processedFiles.image }),
           ...(processedFiles.photos && { photos: processedFiles.photos }),
+          ...(processedFiles.primaryDocuments && { primaryDocuments: processedFiles.primaryDocuments }),
+          ...(processedFiles.secondaryDocuments && { secondaryDocuments: processedFiles.secondaryDocuments }),
         };
 
         next();

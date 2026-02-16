@@ -54,6 +54,8 @@ export type IUser = {
         zipCode?: string;
         website?: string;
         logo?: string;
+        primaryDocuments?: string[];
+        secondaryDocuments?: string[];
         photos?: string[];
         facebook?: string;
         instagram?: string;

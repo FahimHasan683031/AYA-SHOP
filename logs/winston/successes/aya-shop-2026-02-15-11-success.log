@@ -78,3 +78,7 @@
 {Sun Feb 15 2026 11:49:07} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /webhook 200 - 0.750 ms
 {Sun Feb 15 2026 11:50:08} [AYA SHOP 🚀] info: ⚠️ Unhandled event type: balance.available
 {Sun Feb 15 2026 11:50:08} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - POST /webhook 200 - 1.826 ms
+{Sun Feb 15 2026 11:56:39} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
+{Sun Feb 15 2026 11:56:39} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
+{Sun Feb 15 2026 11:56:39} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
+{Sun Feb 15 2026 11:56:39} [AYA SHOP 🚀] info: ℹ Admin user already exists

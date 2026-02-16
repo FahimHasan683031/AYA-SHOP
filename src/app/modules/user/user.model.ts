@@ -98,6 +98,8 @@ const UserSchema = new Schema(
                 zipCode: { type: String },
                 website: { type: String },
                 logo: { type: String },
+                primaryDocuments: [{ type: String }],
+                secondaryDocuments: [{ type: String }],
                 photos: [{ type: String }],
                 facebook: { type: String },
                 instagram: { type: String },
