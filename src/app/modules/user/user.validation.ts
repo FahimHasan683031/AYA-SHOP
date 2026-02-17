@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { USER_ROLES, USER_STATUS } from "./user.interface";
+import { USER_ROLES, USER_STATUS, BUSINESS_STATUS } from "./user.interface";
 
 export const userSignupSchema = z.object({
   body: z.object({
@@ -66,10 +66,18 @@ export const updateBusinessSchema = z.object({
   })
 });
 
+export const updateBusinessStatusSchema = z.object({
+  body: z.object({
+    businessStatus: z.nativeEnum(BUSINESS_STATUS),
+    rejectedReason: z.string().optional(),
+  })
+});
+
 export const UserValidations = {
   userSignupSchema,
   userLoginSchema,
   userUpdateSchema,
   changePasswordSchema,
   updateBusinessSchema,
+  updateBusinessStatusSchema,
 };

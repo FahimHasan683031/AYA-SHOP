@@ -88,6 +88,17 @@ const updateBusinessProfile = catchAsync(async (req: Request, res: Response) => 
   })
 })
 
+// update business status
+const updateBusinessStatus = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserServices.updateBusinessStatus(req.params.id, req.body)
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Business status updated successfully',
+    data: result,
+  })
+})
+
 export const UserController = {
   getAllUser,
   updateProfile,
@@ -95,5 +106,6 @@ export const UserController = {
   deleteUser,
   getProfile,
   deleteMyAccount,
-  updateBusinessProfile
+  updateBusinessProfile,
+  updateBusinessStatus
 }

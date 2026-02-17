@@ -1,6 +1,6 @@
 import { Model, Types } from "mongoose";
-import { USER_ROLES, USER_STATUS } from "../../../enum/user";
-export { USER_ROLES, USER_STATUS };
+import { BUSINESS_STATUS, USER_ROLES, USER_STATUS } from "../../../enum/user";
+export { USER_ROLES, USER_STATUS, BUSINESS_STATUS };
 
 type IAuthentication = {
     restrictionLeftAt: Date | null
@@ -62,6 +62,8 @@ export type IUser = {
         instagram?: string;
         twitter?: string;
         businessHours?: IBusinessHours;
+        businessStatus?: BUSINESS_STATUS;
+        rejectedReason?: string;
         stripeAccountId?: string;
         stripeOnboardingCompleted?: boolean;
     };

@@ -4,6 +4,7 @@ import { IUser, USER_STATUS, USER_ROLES, UserModel } from "./user.interface";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../../../errors/ApiError";
 import config from "../../../config";
+import { BUSINESS_STATUS } from "../../../enum/user";
 
 const UserSchema = new Schema(
     {
@@ -29,7 +30,7 @@ const UserSchema = new Schema(
         status: {
             type: String,
             enum: Object.values(USER_STATUS),
-            default: USER_STATUS.PENDING,
+            default: USER_STATUS.ACTIVE,
         },
         verified: {
             type: Boolean,
@@ -116,6 +117,8 @@ const UserSchema = new Schema(
                     saturday: { from: { type: String }, to: { type: String } },
                     sunday: { from: { type: String }, to: { type: String } },
                 },
+                businessStatus: { type: String, enum: Object.values(BUSINESS_STATUS), default: BUSINESS_STATUS.PENDING },
+                rejectedReason: { type: String },
                 stripeAccountId: { type: String },
                 stripeOnboardingCompleted: { type: Boolean, default: false },
             },

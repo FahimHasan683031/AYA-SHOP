@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 import ApiError from '../../../errors/ApiError'
 import { IUser } from './user.interface'
 import { User } from './user.model'
-import { USER_ROLES, USER_STATUS } from '../../../enum/user'
+import { BUSINESS_STATUS, USER_ROLES, USER_STATUS } from '../../../enum/user'
 import { JwtPayload } from 'jsonwebtoken'
 import { logger } from '../../../shared/logger'
 import QueryBuilder from '../../builder/QueryBuilder'
@@ -149,6 +149,10 @@ const updateBusinessProfile = async (
         throw new ApiError(StatusCodes.UNAUTHORIZED, 'Only business users can update business profile.')
     }
 
+    if (isExistUser.business?.businessStatus === BUSINESS_STATUS.REJECTED && payload) {
+        payload.businessStatus = BUSINESS_STATUS.RESUBMITTED
+    }
+
     const updatedUser = await User.findOneAndUpdate(
         { _id: user.authId, status: { $ne: USER_STATUS.DELETED } },
         { $set: { business: { ...(isExistUser.business || {}), ...payload } } },
@@ -159,7 +163,42 @@ const updateBusinessProfile = async (
         throw new ApiError(StatusCodes.BAD_REQUEST, 'Failed to update business profile')
     }
 
+
+
     return updatedUser
+}
+
+
+
+const updateBusinessStatus = async (
+    id: string,
+    payload: { businessStatus: string, rejectedReason?: string }
+) => {
+    const isExistUser = await User.findById(id)
+
+    if (!isExistUser) {
+        throw new ApiError(StatusCodes.NOT_FOUND, 'User not found')
+    }
+
+    if (isExistUser.role !== USER_ROLES.BUSINESS) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, 'User is not a business user')
+    }
+
+    const updateData: any = {
+        'business.businessStatus': payload.businessStatus
+    }
+
+    if (payload.rejectedReason) {
+        updateData['business.rejectedReason'] = payload.rejectedReason
+    }
+
+    const result = await User.findByIdAndUpdate(
+        id,
+        { $set: updateData },
+        { new: true }
+    )
+
+    return result
 }
 
 export const UserServices = {
@@ -170,5 +209,6 @@ export const UserServices = {
     getProfile,
     deleteMyAccount,
     insertAdminIntoDB,
-    updateBusinessProfile
+    updateBusinessProfile,
+    updateBusinessStatus
 }

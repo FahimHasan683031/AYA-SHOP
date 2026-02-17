@@ -5,11 +5,17 @@ export enum USER_ROLES {
 }
 
 export enum USER_STATUS {
-    PENDING = 'pending',
     ACTIVE = 'active',
-    REJECTED = 'rejected',
     RESTRICTED = 'restricted',
     DELETED = 'deleted',
+}
+
+export enum BUSINESS_STATUS {
+    PENDING = 'pending',
+    APPROVED = 'approved',
+    REJECTED = 'rejected',
+    RESUBMITTED = "resubmitted"
+
 }
 
 export enum ADMIN_ROLES {

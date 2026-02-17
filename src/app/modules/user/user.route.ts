@@ -3,7 +3,7 @@ import { UserController } from './user.controller'
 import auth from '../../middleware/auth'
 import validateRequest from '../../middleware/validateRequest'
 import { UserValidations } from './user.validation'
-import { USER_ROLES } from '../../../enum/user'
+import { USER_ROLES, ADMIN_ROLES } from '../../../enum/user'
 import { fileAndBodyProcessorUsingDiskStorage } from '../../middleware/processReqBody'
 
 const router = express.Router()
@@ -41,6 +41,13 @@ router.delete(
 router.get('/:id',
   auth(USER_ROLES.ADMIN, USER_ROLES.BUSINESS, USER_ROLES.CLIENT),
   UserController.getSingleUser
+)
+
+router.patch(
+  '/business-status/:id',
+  auth(USER_ROLES.ADMIN, ADMIN_ROLES.SUPER_ADMIN),
+  validateRequest(UserValidations.updateBusinessStatusSchema),
+  UserController.updateBusinessStatus
 )
 
 

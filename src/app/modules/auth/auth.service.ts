@@ -689,10 +689,10 @@ const addPhone = async (user: JwtPayload, phone: string) => {
   }
 
   const isPhoneExist = await User.findOne({
-    phone: phone,
-    status: { $in: [USER_STATUS.ACTIVE, USER_STATUS.RESTRICTED] },
+    phone: phone
   });
 
+  console.log(isPhoneExist);
   if (isPhoneExist) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
