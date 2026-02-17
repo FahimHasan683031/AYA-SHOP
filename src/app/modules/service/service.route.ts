@@ -5,12 +5,14 @@ import { USER_ROLES } from "../user/user.interface";
 import validateRequest from "../../middleware/validateRequest";
 import { ServiceValidation } from "./service.validation";
 import { fileAndBodyProcessorUsingDiskStorage } from "../../middleware/processReqBody";
+import { businessAuth } from "../../middleware/businessAuth";
 
 const router = express.Router();
 
 router.post(
     "/",
     auth(USER_ROLES.BUSINESS),
+    businessAuth,
     fileAndBodyProcessorUsingDiskStorage(),
     validateRequest(ServiceValidation.createServiceSchema),
     ServiceController.createService
@@ -34,6 +36,7 @@ router.get("/:id/availability",
 router.patch(
     "/:id",
     auth(USER_ROLES.BUSINESS),
+    businessAuth,
     fileAndBodyProcessorUsingDiskStorage(),
     validateRequest(ServiceValidation.updateServiceSchema),
     ServiceController.updateService
@@ -41,6 +44,7 @@ router.patch(
 
 router.delete("/:id",
     auth(USER_ROLES.BUSINESS, USER_ROLES.ADMIN),
+    businessAuth,
     ServiceController.deleteService
 );
 
