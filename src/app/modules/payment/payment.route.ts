@@ -38,12 +38,12 @@ router.get(
 
 router.get(
     "/",
-    auth(USER_ROLES.ADMIN),
+    auth(USER_ROLES.ADMIN, USER_ROLES.BUSINESS),
     PaymentController.getPaymentsController
 )
 router.get(
     "/:id",
-    auth(USER_ROLES.ADMIN),
+    auth(USER_ROLES.ADMIN, USER_ROLES.BUSINESS),
     PaymentController.getPaymentByIdController
 )
 

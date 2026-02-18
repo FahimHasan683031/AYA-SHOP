@@ -15,7 +15,7 @@ const createService = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllServices = catchAsync(async (req: Request, res: Response) => {
-    const result = await ServiceService.getAllServicesFromDB(req.query);
+    const result = await ServiceService.getAllServicesFromDB(req.user, req.query);
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         success: true,
@@ -45,22 +45,22 @@ const updateService = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
-const deleteService = catchAsync(async (req: Request, res: Response) => {
-    const result = await ServiceService.deleteServiceFromDB(req.params.id, (req as any).user._id);
-    sendResponse(res, {
-        statusCode: StatusCodes.OK,
-        success: true,
-        message: "Service deleted successfully",
-        data: result,
-    });
-});
-
 const getAvailableSlots = catchAsync(async (req: Request, res: Response) => {
     const result = await ServiceService.getAvailableSlotsFromDB(req.params.id, req.query.date as string);
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         success: true,
         message: "Available slots fetched successfully",
+        data: result,
+    });
+});
+
+const deleteService = catchAsync(async (req: Request, res: Response) => {
+    const result = await ServiceService.deleteServiceFromDB(req.user, req.params.id);
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Service deleted successfully",
         data: result,
     });
 });

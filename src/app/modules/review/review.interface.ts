@@ -2,8 +2,8 @@ import { Types } from 'mongoose'
 
 export interface IReview {
   _id?: Types.ObjectId
-  name: string
-  email: string
+  service: Types.ObjectId
+  user: Types.ObjectId
   rating: number
   comment?: string
 }

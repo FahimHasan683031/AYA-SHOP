@@ -12,6 +12,8 @@ import { initiateStripeRefund } from "../../../stripe/stripeRefund";
 import { logger } from "../../../shared/logger";
 import stripe from "../../../config/stripe";
 import Stripe from "stripe";
+import { JwtPayload } from "jsonwebtoken";
+import { USER_ROLES } from "../user/user.interface";
 
 const createBookingToDB = async (userId: string, payload: IBooking) => {
     const service = await Service.findById(payload.service);
@@ -162,7 +164,7 @@ const createBookingToDB = async (userId: string, payload: IBooking) => {
         await Booking.findByIdAndUpdate(result._id, {
             $set: {
                 status: BOOKING_STATUS.PENDING,
-                paymentStatus: PAYMENT_STATUS.FAILED, // Using FAILED as handCash as per user diff
+                paymentStatus: PAYMENT_STATUS.FAILED,
             },
         });
     }
@@ -188,19 +190,18 @@ const createBookingToDB = async (userId: string, payload: IBooking) => {
 };
 
 const getAllBookingsFromDB = async (user: any, query: Record<string, unknown>) => {
-    let filter: Record<string, unknown> = {};
+    let primaryFilter: Record<string, unknown> = {};
 
     if (user.role === 'client') {
-        filter = { user: user.authId };
+        primaryFilter = { user: user.authId };
     } else if (user.role === 'business') {
-        filter = { provider: user.authId };
+        primaryFilter = { provider: user.authId };
     } else if (user.role === 'admin') {
-        // Admin sees all bookings, no filter needed
-        filter = {};
+        primaryFilter = {};
     }
 
     const bookingQuery = new QueryBuilder(
-        Booking.find(filter).populate("service provider user"),
+        Booking.find(primaryFilter).populate("service provider user"),
         query
     )
         .filter()
@@ -367,9 +368,19 @@ const updateBookingStatusInDB = async (id: string, user: any, status: string) =>
     return result;
 };
 
+const deleteBookingFromDB = async (id: string) => {
+    const isBookingExist = await Booking.findById(id);
+    if(!isBookingExist){
+        throw new ApiError(StatusCodes.NOT_FOUND, "Booking not found");
+    }
+    const result = await Booking.findByIdAndDelete(id);
+    return result;
+};
+
 export const BookingService = {
     createBookingToDB,
     getAllBookingsFromDB,
     getSingelBookingFromDB,
     updateBookingStatusInDB,
+    deleteBookingFromDB,
 };

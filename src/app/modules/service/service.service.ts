@@ -5,6 +5,8 @@ import { Service } from "./service.model";
 import { Booking } from "../booking/booking.model";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { CategoryModel } from "../category/category.model";
+import { JwtPayload } from "jsonwebtoken";
+import { USER_ROLES } from "../user/user.interface";
 
 
 const createServiceToDB = async (providerId: string, payload: IService) => {
@@ -17,8 +19,13 @@ const createServiceToDB = async (providerId: string, payload: IService) => {
     return result;
 };
 
-const getAllServicesFromDB = async (query: Record<string, unknown>) => {
-    const serviceQuery = new QueryBuilder(Service.find(), query)
+const getAllServicesFromDB = async (user: JwtPayload, query: Record<string, unknown>) => {
+    const primaryFilter: Record<string, unknown> = {}
+    if (user.role === USER_ROLES.BUSINESS) {
+        primaryFilter.provider = user.authId;
+    }
+
+    const serviceQuery = new QueryBuilder(Service.find(primaryFilter), query)
         .search(["name", "description"])
         .filter()
         .sort()
@@ -56,20 +63,6 @@ const updateServiceInDB = async (id: string, providerId: string, payload: Partia
         new: true,
         runValidators: true,
     });
-    return result;
-};
-
-const deleteServiceFromDB = async (id: string, providerId: string) => {
-    const isExist = await Service.findById(id);
-    if (!isExist) {
-        throw new ApiError(StatusCodes.NOT_FOUND, "Service not found");
-    }
-
-    if (isExist.provider.toString() !== providerId) {
-        throw new ApiError(StatusCodes.FORBIDDEN, "You are not authorized to delete this service");
-    }
-
-    const result = await Service.findByIdAndDelete(id);
     return result;
 };
 
@@ -135,6 +128,20 @@ const getAvailableSlotsFromDB = async (serviceId: string, date: string) => {
     }
 
     return slots;
+};
+
+const deleteServiceFromDB = async (user: JwtPayload,id: string) => {
+    const isExist = await Service.findById(id);
+    if (!isExist) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Service not found");
+    }
+
+    if (user.role === USER_ROLES.BUSINESS && isExist.provider.toString() !== user.authId) {
+        throw new ApiError(StatusCodes.FORBIDDEN, "You are not authorized to delete this service");
+    }
+
+    const result = await Service.findByIdAndDelete(id);
+    return result;
 };
 
 export const ServiceService = {

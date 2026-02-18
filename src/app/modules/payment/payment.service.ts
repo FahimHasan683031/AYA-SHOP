@@ -6,6 +6,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { Booking } from "../booking/booking.model";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../../../errors/ApiError";
+import { USER_ROLES } from "../user/user.interface";
 
 // Create seassion
 const creatSession = async (user: JwtPayload, bookingId: string) => {
@@ -31,8 +32,13 @@ const createPayment = async (payload: Partial<IPayment>) => {
 };
 
 // get payments
-const getPayments = async (query: Record<string, unknown>) => {
-  const paymentQueryBuilder = new QueryBuilder(Payment.find(), query)
+const getPayments = async (user: JwtPayload, query: Record<string, unknown>) => {
+  const primaryFilter: Record<string, unknown> = {}
+  if (user.role === USER_ROLES.CLIENT) {
+    primaryFilter.email = user.email;
+  }
+
+  const paymentQueryBuilder = new QueryBuilder(Payment.find(primaryFilter), query)
     .filter()
     .sort()
     .paginate();

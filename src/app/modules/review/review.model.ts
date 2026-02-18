@@ -2,12 +2,14 @@ import mongoose from "mongoose"
 import { IReview } from "./review.interface"
 
 const ReviewSchema = new mongoose.Schema<IReview>({
-  name: {
-    type: String,
+  service: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Service',
     required: true,
   },
-  email: {
-    type: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
   rating: {

@@ -35,5 +35,9 @@ router.patch(
     validateRequest(BookingValidation.updateBookingStatusSchema),
     BookingController.updateBookingStatus
 );
-
+router.delete(
+    "/:id",
+    auth(USER_ROLES.ADMIN),
+    BookingController.deleteBooking
+);
 export const BookingRoutes = router;

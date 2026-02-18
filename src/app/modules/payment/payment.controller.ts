@@ -32,7 +32,7 @@ export const createPaymentController = catchAsync(async (req: Request, res: Resp
 
 // get payments
 export const getPaymentsController = catchAsync(async (req: Request, res: Response) => {
-  const payments = await PaymentService.getPayments(req.query);
+  const payments = await PaymentService.getPayments(req.user!, req.query);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,

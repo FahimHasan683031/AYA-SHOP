@@ -1,10 +1,12 @@
+import { JwtPayload } from 'jsonwebtoken'
 import QueryBuilder from '../../builder/QueryBuilder'
 import { IReview } from './review.interface'
 import { Review } from './review.model'
+import { USER_ROLES } from '../user/user.interface'
 
 // create review
-const createReview = async (payload: IReview) => {
-  console.log(payload)
+const createReview = async (user: JwtPayload, payload: IReview) => {
+payload.user = user.authId
   const result = await Review.create(payload)
   return result
 }
@@ -26,17 +28,16 @@ const getAllReviews = async (query: Record<string, unknown>) => {
   }
 }
 
-// get single review
-const getSingleReview = async (id: string) => {
-  const result = await Review.findById(id)
-  return result
-}
+
 
 // delete review
-const deleteReview = async (id: string) => {
+const deleteReview = async (user: JwtPayload, id: string) => {
   const isExist = await Review.findById(id)
   if (!isExist) {
     throw new Error('Review not found')
+  }
+  if(user.role !== USER_ROLES.ADMIN && isExist.user !== user.authId){
+    throw new Error('You are not authorized to delete this review')
   }
   const result = await Review.findByIdAndDelete(id)
   return result
@@ -45,6 +46,5 @@ const deleteReview = async (id: string) => {
 export const ReviewService = {
   createReview,
   getAllReviews,
-  getSingleReview,
   deleteReview,
 }
