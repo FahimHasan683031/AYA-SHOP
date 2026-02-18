@@ -23,6 +23,11 @@ router.get("/",
     ServiceController.getAllServices
 );
 
+router.get("/top-rated",
+    auth(USER_ROLES.CLIENT),
+    ServiceController.getTopRatedServices
+);
+
 router.get("/:id",
     auth(USER_ROLES.BUSINESS, USER_ROLES.ADMIN, USER_ROLES.CLIENT),
     ServiceController.getSingleService

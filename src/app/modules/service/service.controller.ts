@@ -36,7 +36,7 @@ const getSingleService = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateService = catchAsync(async (req: Request, res: Response) => {
-    const result = await ServiceService.updateServiceInDB(req.params.id, (req as any).user._id, req.body);
+    const result = await ServiceService.updateServiceInDB(req.params.id, (req as any).user.authId, req.body);
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         success: true,
@@ -65,6 +65,17 @@ const deleteService = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getTopRatedServices = catchAsync(async (req: Request, res: Response) => {
+    const result = await ServiceService.getTopRatedServicesFromDB(req.query);
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Top rated services retrieved successfully",
+        meta: result.meta,
+        data: result.result,
+    });
+});
+
 export const ServiceController = {
     createService,
     getAllServices,
@@ -72,4 +83,5 @@ export const ServiceController = {
     updateService,
     deleteService,
     getAvailableSlots,
+    getTopRatedServices,
 };

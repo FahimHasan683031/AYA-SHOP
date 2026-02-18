@@ -7,6 +7,7 @@ import QueryBuilder from "../../builder/QueryBuilder";
 import { CategoryModel } from "../category/category.model";
 import { JwtPayload } from "jsonwebtoken";
 import { USER_ROLES } from "../user/user.interface";
+import mongoose from "mongoose";
 
 
 const createServiceToDB = async (providerId: string, payload: IService) => {
@@ -19,25 +20,159 @@ const createServiceToDB = async (providerId: string, payload: IService) => {
     return result;
 };
 
-const getAllServicesFromDB = async (user: JwtPayload, query: Record<string, unknown>) => {
-    const primaryFilter: Record<string, unknown> = {}
-    if (user.role === USER_ROLES.BUSINESS) {
-        primaryFilter.provider = user.authId;
+
+export const getAllServicesFromDB = async (user: any, query: Record<string, unknown>) => {
+    const pipeline: any[] = [];
+
+    // 1. Match services based on role
+    let matchStage: any = {};
+
+    if (user.role === 'business' && user.authId) {
+        matchStage.provider = new mongoose.Types.ObjectId(user.authId);
     }
 
-    const serviceQuery = new QueryBuilder(Service.find(primaryFilter), query)
-        .search(["name", "description"])
-        .filter()
-        .sort()
-        .paginate()
-        .fields();
+    if (Object.keys(matchStage).length > 0) {
+        pipeline.push({ $match: matchStage });
+    }
 
-    const result = await serviceQuery.modelQuery;
-    const meta = await serviceQuery.getPaginationInfo();
+    // 2. Lookup provider details (only required fields)
+    pipeline.push({
+        $lookup: {
+            from: "users",
+            localField: "provider",
+            foreignField: "_id",
+            as: "providerInfo",
+            pipeline: [
+                {
+                    $project: {
+                        fullName: 1,
+                        email: 1,
+                        image: 1,
+                        "business.businessName": 1,
+                        "business.logo": 1,
+                        "business.address": 1,
+                        "business.city": 1,
+                        "business.state": 1,
+                        "business.zipCode": 1,
+                        "business.businessStatus": 1
+                    }
+                }
+            ]
+        }
+    });
+    pipeline.push({ $unwind: "$providerInfo" });
+
+    // 3. Lookup category details (only required fields)
+    pipeline.push({
+        $lookup: {
+            from: "categories",
+            localField: "category",
+            foreignField: "_id",
+            as: "categoryInfo",
+            pipeline: [
+                {
+                    $project: {
+                        name: 1,
+                        slug: 1,
+                        icon: 1
+                    }
+                }
+            ]
+        }
+    });
+    pipeline.push({ $unwind: { path: "$categoryInfo", preserveNullAndEmptyArrays: true } });
+
+    // 4. Apply location filters
+    if (query.state || query.city || query.zipCode) {
+        const locationMatch: any = {};
+        if (query.state) locationMatch["providerInfo.business.state"] = { $regex: query.state, $options: "i" };
+        if (query.city) locationMatch["providerInfo.business.city"] = { $regex: query.city, $options: "i" };
+        if (query.zipCode) locationMatch["providerInfo.business.zipCode"] = query.zipCode;
+        pipeline.push({ $match: locationMatch });
+    }
+
+    console.log(pipeline)
+
+    // 5. Apply search
+    if (query.searchTerm) {
+        pipeline.push({
+            $match: {
+                $or: [
+                    { name: { $regex: query.searchTerm, $options: "i" } },
+                    { "categoryInfo.name": { $regex: query.searchTerm, $options: "i" } }
+                ]
+            }
+        });
+    }
+
+    // 6. Apply other filters
+    if (query.category) {
+        pipeline.push({
+            $match: {
+                category: new mongoose.Types.ObjectId(query.category as string)
+            }
+        });
+    }
+
+    if (query.minPrice || query.maxPrice) {
+        const priceMatch: any = {};
+        if (query.minPrice) priceMatch.$gte = Number(query.minPrice);
+        if (query.maxPrice) priceMatch.$lte = Number(query.maxPrice);
+        pipeline.push({ $match: { price: priceMatch } });
+    }
+
+    // 7. Project only required service fields
+    pipeline.push({
+        $project: {
+            name: 1,
+            description: 1,
+            price: 1,
+            duration: 1,
+            photos: 1,
+            features: 1,
+            rating: 1,
+            bookingCount: 1,
+            providerInfo: 1,
+            categoryInfo: 1,
+            createdAt: 1,
+            updatedAt: 1
+        }
+    });
+
+    // 8. Sorting
+    const sortField = (query.sort as string) || "-createdAt";
+    const sortOrder = sortField.startsWith("-") ? -1 : 1;
+    const sortKey = sortField.replace("-", "");
+    pipeline.push({ $sort: { [sortKey]: sortOrder } });
+
+    // 9. Pagination
+    const page = Number(query.page) || 1;
+    const limit = Number(query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // Get total count
+    const countPipeline = [...pipeline];
+    // Remove project and pagination stages for count
+    const countResult = await Service.aggregate([
+        ...pipeline.slice(0, -3), // Remove project, sort, skip, limit
+        { $count: "total" }
+    ]);
+    const total = countResult[0]?.total || 0;
+
+    // Get paginated results
+    pipeline.push({ $skip: skip });
+    pipeline.push({ $limit: limit });
+
+    const result = await Service.aggregate(pipeline);
 
     return {
-        meta,
-        result,
+        meta: {
+            total,
+            page,
+            limit,
+            totalPage: Math.ceil(total / limit)
+        },
+        result
     };
 };
 
@@ -130,7 +265,7 @@ const getAvailableSlotsFromDB = async (serviceId: string, date: string) => {
     return slots;
 };
 
-const deleteServiceFromDB = async (user: JwtPayload,id: string) => {
+const deleteServiceFromDB = async (user: JwtPayload, id: string) => {
     const isExist = await Service.findById(id);
     if (!isExist) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Service not found");
@@ -144,6 +279,31 @@ const deleteServiceFromDB = async (user: JwtPayload,id: string) => {
     return result;
 };
 
+const getTopRatedServicesFromDB = async (query: Record<string, unknown>) => {
+    // Force sort by averageRating descending unless caller overrides
+    const mergedQuery = { sort: "-rating.averageRating", ...query };
+
+    const serviceQuery = new QueryBuilder(
+        Service.find()
+            .populate({ path: "category", select: "name icon" })
+            .populate({
+                path: "provider",
+                select: "fullName image business.businessName business.logo business.city business.state business.zipCode",
+            }),
+        mergedQuery
+    )
+        .search(["name", "description"])
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
+
+    const result = await serviceQuery.modelQuery;
+    const meta = await serviceQuery.getPaginationInfo();
+
+    return { meta, result };
+};
+
 export const ServiceService = {
     createServiceToDB,
     getAllServicesFromDB,
@@ -151,4 +311,5 @@ export const ServiceService = {
     updateServiceInDB,
     deleteServiceFromDB,
     getAvailableSlotsFromDB,
+    getTopRatedServicesFromDB,
 };
