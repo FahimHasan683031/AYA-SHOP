@@ -12,29 +12,29 @@ const getNotificationFromDB = catchAsync(async (req: Request, res: Response) => 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         success: true,
-        message: 'Notifications Retrieved Successfully',
+        message: 'Notifications retrieved successfully',
         data: result,
     });
-}
-); const getUnreadCount = catchAsync(async (req: Request, res: Response) => {
+});
+
+const getUnreadCount = catchAsync(async (req: Request, res: Response) => {
     const result = await NotificationService.getUnreadCountFromDB(req.user);
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         success: true,
-        message: 'Unread Notification Count Retrieved Successfully',
+        message: 'Unread notification count retrieved successfully',
         data: result
     });
 });
-
 
 const sendTestPushNotification = catchAsync(async (req: Request, res: Response) => {
     const { token, title, body } = req.body;
 
     const result = await PushNotificationService.sendPushNotification(
-        token || "c0UaCLXGSJ6JsC62K6NPq0:APA91bHzTTe3umtCk7TzNcOXN-aa3SPNQVOtgx6jwQvz1OiTDKLJEIPc-A-8Wn707pYzKnwDZA1nH2zDNvkxTPbpB7SUMAYO3odSW8PEFzCopYf930fNLHE",
+        token || "your-device-token",
         title || "Test Notification",
-        body || "This is a test notification from the Backend Template! 🚀",
+        body || "This is a test notification from the Backend! 🚀",
         {
             screen: "HOME",
             type: "TEST"

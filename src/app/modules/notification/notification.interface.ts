@@ -7,7 +7,7 @@ export type INotification = {
     read: boolean;
     referenceId?: Types.ObjectId;
     screen?: string;
-    type: "USER" | "ADMIN";
+    type: "client" | "business" | "admin";
 };
 
 export type NotificationModel = Model<INotification>;

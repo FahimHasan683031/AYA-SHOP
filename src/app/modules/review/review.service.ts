@@ -7,6 +7,9 @@ import { USER_ROLES } from '../user/user.interface'
 import { Service } from '../service/service.model'
 import ApiError from '../../../errors/ApiError'
 import { StatusCodes } from 'http-status-codes'
+import { NotificationService } from '../notification/notification.service'
+import { logger } from '../../../shared/logger'
+import { User } from '../user/user.model'
 
 // create review
 const createReview = async (user: JwtPayload, payload: IReview) => {
@@ -50,6 +53,25 @@ const createReview = async (user: JwtPayload, payload: IReview) => {
     )
 
     await session.commitTransaction()
+
+    // --- NOTIFICATION ---
+    try {
+      const service = await Service.findById(payload.service).select('name provider');
+      const customer = await User.findById(user.authId).select('fullName');
+
+      if (service && service.provider) {
+        await NotificationService.insertNotification({
+          receiver: service.provider as any,
+          title: "New Review Received",
+          message: `${customer?.fullName || 'A customer'} left a review for your service: ${service.name}.`,
+          type: "business",
+          referenceId: review._id as any,
+        });
+      }
+    } catch (err) {
+      logger.error(`Failed to send review notification for service ${payload.service}:`, err);
+    }
+
     return review
   } catch (error) {
     await session.abortTransaction()

@@ -182,7 +182,7 @@ const createBookingToDB = async (userId: string, payload: IBooking) => {
         receiver: service.provider,
         title: "New Booking",
         message: `You have received a new booking from ${userName}`,
-        type: "ADMIN",
+        type: USER_ROLES.BUSINESS,
         referenceId: result._id as any,
     });
 
@@ -352,17 +352,68 @@ const updateBookingStatusInDB = async (id: string, user: any, status: string) =>
 
 
 
-    // If status is cancelled and payment was online, trigger refund
-    if (status === BOOKING_STATUS.CANCELLED && result?.paymentMethod === 'online' && result?.paymentStatus === PAYMENT_STATUS.PAID && result?.transactionId) {
-        try {
-            await initiateStripeRefund(result.transactionId, id);
+    // --- NOTIFICATIONS ---
+    try {
+        if (result) {
+            const customer = await User.findById(result.user).select('fullName');
+            const provider = await User.findById(result.provider).select('fullName');
+            const service = await Service.findById(result.service).select('name');
 
-            await Booking.findByIdAndUpdate(id, {
-                $set: { paymentStatus: PAYMENT_STATUS.REFUNDED }
-            });
-        } catch (error) {
-            logger.error(`Failed to refund for booking ${id}:`, error);
+            const customerName = customer?.fullName || 'Customer';
+            const providerName = provider?.fullName || 'Provider';
+            const serviceName = service?.name || 'Service';
+
+            if (status === BOOKING_STATUS.CONFIRMED) {
+                // Notify Customer
+                await NotificationService.insertNotification({
+                    receiver: result.user,
+                    title: "Booking Accepted",
+                    message: `Your booking for ${serviceName} has been accepted by ${providerName}.`,
+                    type: "client",
+                    referenceId: result._id as any,
+                });
+            } else if (status === BOOKING_STATUS.CANCELLED) {
+                // If user who updated is customer, notify provider
+                if (user.role === 'client') {
+                    await NotificationService.insertNotification({
+                        receiver: result.provider,
+                        title: "Booking Cancelled",
+                        message: `The booking for ${serviceName} has been cancelled by ${customerName}.`,
+                        type: "business",
+                        referenceId: result._id as any,
+                    });
+                } else {
+                    // Notify Customer
+                    await NotificationService.insertNotification({
+                        receiver: result.user,
+                        title: "Booking Cancelled",
+                        message: `Your booking for ${serviceName} has been cancelled by ${providerName}.`,
+                        type: "client",
+                        referenceId: result._id as any,
+                    });
+                }
+            } else if (status === BOOKING_STATUS.COMPLETED) {
+                // Notify Provider
+                await NotificationService.insertNotification({
+                    receiver: result.provider,
+                    title: "Booking Completed",
+                    message: `The booking for ${serviceName} with ${customerName} is now marked as completed.`,
+                    type: "business",
+                    referenceId: result._id as any,
+                });
+
+                // Notify Customer
+                await NotificationService.insertNotification({
+                    receiver: result.user,
+                    title: "Booking Completed",
+                    message: `Your booking for ${serviceName} is completed. Please leave a review!`,
+                    type: "client",
+                    referenceId: result._id as any,
+                });
+            }
         }
+    } catch (err) {
+        logger.error(`Failed to send status update notification for booking ${id}:`, err);
     }
 
     return result;
@@ -370,7 +421,7 @@ const updateBookingStatusInDB = async (id: string, user: any, status: string) =>
 
 const deleteBookingFromDB = async (id: string) => {
     const isBookingExist = await Booking.findById(id);
-    if(!isBookingExist){
+    if (!isBookingExist) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Booking not found");
     }
     const result = await Booking.findByIdAndDelete(id);

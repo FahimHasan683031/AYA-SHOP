@@ -30,8 +30,8 @@ const notificationSchema = new Schema<INotification, NotificationModel>(
         },
         type: {
             type: String,
-            enum: ['USER', 'ADMIN'],
-            default: 'USER'
+            enum: ['client', 'business', 'admin'],
+            default: 'client'
         }
     },
     {

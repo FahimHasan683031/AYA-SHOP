@@ -4,6 +4,9 @@ import { logger } from '../shared/logger'
 import { Payment } from '../app/modules/payment/payment.model'
 import { Booking } from '../app/modules/booking/booking.model'
 import { BOOKING_STATUS, PAYMENT_STATUS } from '../enum/booking'
+import { NotificationService } from '../app/modules/notification/notification.service'
+import { Service } from '../app/modules/service/service.model'
+import { User } from '../app/modules/user/user.model'
 
 export const handleCheckoutSessionCompleted = async (session: Stripe.Checkout.Session) => {
     logger.info('✅ Checkout completed:', session.id)
@@ -60,6 +63,33 @@ export const handleCheckoutSessionCompleted = async (session: Stripe.Checkout.Se
                         stripeFeeAmount: stripeFee,
                     }
                 });
+
+                // --- NOTIFICATIONS ---
+                try {
+                    const provider = await User.findById(booking.provider).select('fullName');
+                    const service = await Service.findById(booking.service).select('name');
+                    const serviceName = service?.name || 'Service';
+
+                    // Notify Customer
+                    await NotificationService.insertNotification({
+                        receiver: booking.user,
+                        title: "Payment Successful",
+                        message: `Your payment for ${serviceName} was successful. The booking is now pending provider confirmation.`,
+                        type: "client",
+                        referenceId: booking._id as any,
+                    });
+
+                    // Notify Provider
+                    await NotificationService.insertNotification({
+                        receiver: booking.provider,
+                        title: "Booking Paid",
+                        message: `A payment has been received for ${serviceName}. Please review the booking.`,
+                        type: "business",
+                        referenceId: booking._id as any,
+                    });
+                } catch (err) {
+                    logger.error(`Failed to send payment notifications for booking ${referenceId}:`, err);
+                }
             }
         }
     }

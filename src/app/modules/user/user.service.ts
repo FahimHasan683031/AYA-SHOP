@@ -8,6 +8,7 @@ import { logger } from '../../../shared/logger'
 import QueryBuilder from '../../builder/QueryBuilder'
 import config from '../../../config'
 import { CategoryModel } from '../category/category.model'
+import { NotificationService } from '../notification/notification.service'
 
 
 const getAllUser = async (query: Record<string, unknown>) => {
@@ -197,6 +198,29 @@ const updateBusinessStatus = async (
         { $set: updateData },
         { new: true }
     )
+
+    // --- NOTIFICATIONS ---
+    if (result) {
+        try {
+            if (payload.businessStatus === BUSINESS_STATUS.APPROVED) {
+                await NotificationService.insertNotification({
+                    receiver: result._id as any,
+                    title: "Profile Approved",
+                    message: "Congratulations! Your business profile has been approved. You can now start receiving bookings.",
+                    type: "business",
+                });
+            } else if (payload.businessStatus === BUSINESS_STATUS.REJECTED) {
+                await NotificationService.insertNotification({
+                    receiver: result._id as any,
+                    title: "Profile Rejected",
+                    message: `Your business profile was rejected. Reason: ${payload.rejectedReason || 'Please contact support for details.'}`,
+                    type: "business",
+                });
+            }
+        } catch (err) {
+            logger.error(`Failed to send business status notification for user ${id}:`, err);
+        }
+    }
 
     return result
 }
