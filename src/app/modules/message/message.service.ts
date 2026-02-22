@@ -110,17 +110,17 @@ const getMessageFromDB = async (
   await Message.updateMany(
     {
       chatId: new mongoose.Types.ObjectId(id),
-      sender: { $ne: new mongoose.Types.ObjectId(user.id) },
-      readBy: { $ne: new mongoose.Types.ObjectId(user.id) }
+      sender: { $ne: new mongoose.Types.ObjectId(user.authId) },
+      readBy: { $ne: new mongoose.Types.ObjectId(user.authId) }
     },
     {
-      $addToSet: { readBy: new mongoose.Types.ObjectId(user.id) }
+      $addToSet: { readBy: new mongoose.Types.ObjectId(user.authId) }
     }
   );
 
   const result = new QueryBuilder(
     Message.find({ chatId: id })
-      .populate('sender', 'fullName profilePicture')
+      .populate('sender', 'fullName image')
       .sort({ createdAt: -1 }),
     query
   ).paginate();
@@ -131,9 +131,9 @@ const getMessageFromDB = async (
 
   const participant = await Chat.findById(id).populate({
     path: 'participants',
-    select: '-_id fullName profilePicture ',
+    select: '-_id fullName image ',
     match: {
-      _id: { $ne: new mongoose.Types.ObjectId(user.id) }
+      _id: { $ne: new mongoose.Types.ObjectId(user.authId) }
     }
   });
 
@@ -214,6 +214,31 @@ const deleteMessageFromDB = async (messageId: string, userId: string): Promise<I
   return await Message.findByIdAndDelete(messageId);
 };
 
+const markAsRead = async (chatId: string, userId: string) => {
+  await Message.updateMany(
+    {
+      chatId: new mongoose.Types.ObjectId(chatId),
+      sender: { $ne: new mongoose.Types.ObjectId(userId) },
+      readBy: { $ne: new mongoose.Types.ObjectId(userId) }
+    },
+    {
+      $addToSet: { readBy: new mongoose.Types.ObjectId(userId) }
+    }
+  );
+
+  const totalUnreadCount = await getTotalUnreadCount(userId);
+
+  //@ts-ignore
+  const io = global.io;
+  if (io) {
+    io.emit(`totalUnreadCount::${userId}`, { unreadCount: totalUnreadCount });
+    io.emit(`chatListUpdate::${userId}`, {
+      chatId,
+      unreadCount: 0
+    });
+  }
+};
+
 const updateMoneyRequestStatusToDB = async (messageId: string, user: JwtPayload, status: 'accepted' | 'rejected') => {
   return null;
 };
@@ -225,4 +250,5 @@ export const MessageService = {
   getUnreadCountForChat,
   getTotalUnreadCount,
   deleteMessageFromDB,
+  markAsRead,
 };

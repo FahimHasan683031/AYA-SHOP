@@ -32,7 +32,7 @@ const getMessage = catchAsync(async (req: Request, res: Response) => {
 const updateMessage = catchAsync(async (req: Request, res: Response) => {
   const result = await MessageService.updateMessageToDB(
     req.params.id,
-    req.user.id,
+    req.user.authId,
     req.body
   );
   sendResponse(res, {

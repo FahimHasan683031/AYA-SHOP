@@ -201,7 +201,11 @@ const getAllBookingsFromDB = async (user: any, query: Record<string, unknown>) =
     }
 
     const bookingQuery = new QueryBuilder(
-        Booking.find(primaryFilter).populate("service provider user"),
+        Booking.find(primaryFilter).populate([
+            { path: 'service', select: 'name price photos duration' },
+            { path: 'provider', select: 'fullName email image business.businessName business.logo' },
+            { path: 'user', select: 'fullName email image' }
+        ]),
         query
     )
         .filter()
@@ -219,7 +223,11 @@ const getAllBookingsFromDB = async (user: any, query: Record<string, unknown>) =
 };
 
 const getSingelBookingFromDB = async (id: string) => {
-    const booking = await Booking.findById(id);
+    const booking = await Booking.findById(id).populate([
+        { path: 'service', select: 'name price photos duration description' },
+        { path: 'provider', select: 'fullName email image phone business.businessName business.logo business.address business.city' },
+        { path: 'user', select: 'fullName email image phone' }
+    ]);
     if (!booking) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Booking not found");
     }

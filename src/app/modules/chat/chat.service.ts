@@ -94,7 +94,7 @@ const getChatFromDB = async (
     const chats = await chatQueryBuilder.modelQuery
         .populate({
             path: 'participants',
-            select: '_id fullName profilePicture role email',
+            select: '_id fullName image role email',
             match: { _id: { $ne: user.authId } }
         })
         .populate({
@@ -160,7 +160,7 @@ const getAdminSupportChats = async (query: Record<string, unknown>): Promise<any
     const chats = await chatQueryBuilder.modelQuery
         .populate({
             path: 'participants',
-            select: '_id fullName profilePicture email role'
+            select: '_id fullName image email role'
         })
         .populate({
             path: 'lastMessage',

@@ -14,6 +14,7 @@ type IFolderName =
   | 'photos'
   | 'primaryDocuments'
   | 'secondaryDocuments'
+  | 'files'
 
 interface ProcessedFiles {
   [key: string]: string | string[] | undefined
@@ -27,6 +28,7 @@ const uploadFields = [
   { name: 'photos', maxCount: 10 },
   { name: 'primaryDocuments', maxCount: 5 },
   { name: 'secondaryDocuments', maxCount: 5 },
+  { name: 'files', maxCount: 5 },
 ] as const
 
 export const fileAndBodyProcessorUsingDiskStorage = () => {
@@ -102,6 +104,7 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
         photos: IMAGE_MIME_TYPES,
         primaryDocuments: [...IMAGE_MIME_TYPES, 'application/pdf'],
         secondaryDocuments: [...IMAGE_MIME_TYPES, 'application/pdf'],
+        files: [...IMAGE_MIME_TYPES, 'application/pdf'],
       };
 
       const fieldType = file.fieldname as IFolderName;
@@ -162,7 +165,7 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
                 paths.push(filePath);
 
                 if (
-                  ['image', 'logo', 'photos'].includes(
+                  ['image', 'logo', 'photos', 'files'].includes(
                     fieldName,
                   ) &&
                   file.mimetype.startsWith('image/')
@@ -209,6 +212,7 @@ export const fileAndBodyProcessorUsingDiskStorage = () => {
           ...(processedFiles.photos && { photos: processedFiles.photos }),
           ...(processedFiles.primaryDocuments && { primaryDocuments: processedFiles.primaryDocuments }),
           ...(processedFiles.secondaryDocuments && { secondaryDocuments: processedFiles.secondaryDocuments }),
+          ...(processedFiles.files && { files: processedFiles.files }),
         };
 
         next();
