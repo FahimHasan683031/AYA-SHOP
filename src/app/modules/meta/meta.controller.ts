@@ -16,6 +16,18 @@ const getProviderAnalytics = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getPublicStats = catchAsync(async (req: Request, res: Response) => {
+    const result = await MetaService.getPublicStatsFromDB();
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Public statistics retrieved successfully",
+        data: result,
+    });
+});
+
 export const MetaController = {
     getProviderAnalytics,
+    getPublicStats
 };

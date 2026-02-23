@@ -1,9 +1,12 @@
+import mongoose from "mongoose";
+import dayjs from "dayjs";
+import { User } from "../user/user.model";
+import { BOOKING_STATUS } from "../../../enum/booking";
+import { USER_ROLES } from "../user/user.interface";
+import { IPublicStats, IProviderAnalytics } from "./meta.interface";
 import { Booking } from "../booking/booking.model";
 import { ViewHistory } from "../viewHistory/viewHistory.model";
 import { Service } from "../service/service.model";
-import { IProviderAnalytics } from "./meta.interface";
-import mongoose from "mongoose";
-import dayjs from "dayjs";
 
 const getProviderAnalyticsFromDB = async (providerId: string): Promise<IProviderAnalytics> => {
     const last7Days = [];
@@ -97,7 +100,19 @@ const getProviderAnalyticsFromDB = async (providerId: string): Promise<IProvider
         packagePerformance
     };
 };
+const getPublicStatsFromDB = async (): Promise<IPublicStats> => {
+    const totalProviders = await User.countDocuments({ role: USER_ROLES.BUSINESS });
+    const totalJobsDone = await Booking.countDocuments({ status: BOOKING_STATUS.COMPLETED });
+    const totalServices = await Service.countDocuments();
+
+    return {
+        totalProviders,
+        totalJobsDone,
+        totalServices
+    };
+};
 
 export const MetaService = {
-    getProviderAnalyticsFromDB
+    getProviderAnalyticsFromDB,
+    getPublicStatsFromDB
 };

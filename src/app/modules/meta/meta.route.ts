@@ -11,4 +11,10 @@ router.get(
     MetaController.getProviderAnalytics
 );
 
+router.get(
+    "/landing-stats",
+    auth(USER_ROLES.BUSINESS,USER_ROLES.CLIENT,USER_ROLES.ADMIN),
+    MetaController.getPublicStats
+);
+
 export const MetaRoutes = router;

@@ -14,7 +14,7 @@ router.post(
   ReviewController.createReview,
 )
 
-router.get('/', ReviewController.getAllReviews)
+router.get('/:serviceId', ReviewController.getAllReviews)
 router.delete('/:id', auth(USER_ROLES.CLIENT, USER_ROLES.ADMIN), ReviewController.deleteReview)
 
 

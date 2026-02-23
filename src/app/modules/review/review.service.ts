@@ -82,8 +82,8 @@ const createReview = async (user: JwtPayload, payload: IReview) => {
 }
 
 // get all reviews
-const getAllReviews = async (query: Record<string, unknown>) => {
-  const reviewQueryBuilder = new QueryBuilder(Review.find(), query)
+const getAllReviews = async (serviceId: string, query: Record<string, unknown>) => {
+  const reviewQueryBuilder = new QueryBuilder(Review.find({ service: serviceId }).populate('user', '_id fullName image'), query)
     .filter()
     .sort()
     .fields()

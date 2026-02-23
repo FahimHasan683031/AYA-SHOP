@@ -14,3 +14,9 @@ export type IProviderAnalytics = {
         revenue: number;
     }[];
 };
+
+export type IPublicStats = {
+    totalProviders: number;
+    totalJobsDone: number;
+    totalServices: number;
+};
