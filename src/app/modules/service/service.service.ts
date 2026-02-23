@@ -8,6 +8,8 @@ import { CategoryModel } from "../category/category.model";
 import { JwtPayload } from "jsonwebtoken";
 import { USER_ROLES } from "../user/user.interface";
 import mongoose from "mongoose";
+import { ViewHistory } from "../viewHistory/viewHistory.model";
+import dayjs from "dayjs";
 
 
 const createServiceToDB = async (providerId: string, payload: IService) => {
@@ -181,6 +183,21 @@ const getSingleServiceFromDB = async (id: string) => {
     if (!result) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Service not found");
     }
+
+    // Tracking views
+    const today = dayjs().format('YYYY-MM-DD');
+    await ViewHistory.findOneAndUpdate(
+        {
+            service: result._id,
+            date: today
+        },
+        {
+            $inc: { count: 1 },
+            $setOnInsert: { provider: (result as any).provider._id || result.provider }
+        },
+        { upsert: true, new: true }
+    );
+
     return result;
 };
 
