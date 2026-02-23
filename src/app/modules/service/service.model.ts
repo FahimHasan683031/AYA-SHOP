@@ -31,13 +31,7 @@ const ServiceSchema = new Schema<IService>(
         },
         photos: {
             type: [String],
-            required: true,
-            validate: {
-                validator: function (v: string[]) {
-                    return v.length <= 5;
-                },
-                message: "A service can have at most 5 photos.",
-            },
+            required: true
         },
         features: {
             type: [String],
@@ -69,6 +63,10 @@ const ServiceSchema = new Schema<IService>(
                 type: Number,
                 default: 0,
             },
+        },
+        isActive: {
+            type: Boolean,
+            default: true,
         },
     },
     {

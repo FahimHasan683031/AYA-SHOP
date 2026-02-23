@@ -178,25 +178,63 @@ export const getAllServicesFromDB = async (user: any, query: Record<string, unkn
     };
 };
 
-const getSingleServiceFromDB = async (id: string) => {
-    const result = await Service.findById(id).populate("category provider");
+const getSingleServiceFromDB = async (id: string, user: JwtPayload) => {
+    const result = await Service.findById(id).populate([
+        { path: 'category', select: ' _id name icon' },
+        {
+            path: 'provider',
+            select: '_id fullName email image phone business.businessName business.logo business.address business.city business.state business.zipCode business.businessStatus'
+        }
+    ]);
     if (!result) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Service not found");
     }
 
-    // Tracking views
-    const today = dayjs().format('YYYY-MM-DD');
-    await ViewHistory.findOneAndUpdate(
-        {
-            service: result._id,
-            date: today
-        },
-        {
-            $inc: { count: 1 },
-            $setOnInsert: { provider: (result as any).provider._id || result.provider }
-        },
-        { upsert: true, new: true }
-    );
+    // Tracking views - Only for clients
+    if (user.role === USER_ROLES.CLIENT) {
+        const today = dayjs().format('YYYY-MM-DD');
+        await ViewHistory.findOneAndUpdate(
+            {
+                service: result._id,
+                date: today
+            },
+            {
+                $inc: { count: 1 },
+                $setOnInsert: { provider: (result as any).provider._id || result.provider }
+            },
+            { upsert: true, new: true }
+        );
+    }
+
+    // Add statistics for business owner
+    if (user.role === USER_ROLES.BUSINESS && result.provider._id.toString() === user.authId) {
+        console.log("Business owner")
+        const totalViews = await ViewHistory.aggregate([
+            { $match: { service: result._id } },
+            { $group: { _id: null, total: { $sum: "$count" } } }
+        ]);
+
+        const bookingsData = await Booking.aggregate([
+            { $match: { service: result._id } },
+            {
+                $group: {
+                    _id: null,
+                    count: { $sum: 1 },
+                    revenue: { $sum: "$totalAmount" }
+                }
+            }
+        ]);
+
+        return {
+            ...result.toObject(),
+            statistics: {
+                isActive: result.isActive,
+                totalViews: totalViews[0]?.total || 0,
+                bookings: bookingsData[0]?.count || 0,
+                revenue: bookingsData[0]?.revenue || 0
+            }
+        };
+    }
 
     return result;
 };

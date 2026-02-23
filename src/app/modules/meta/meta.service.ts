@@ -84,12 +84,16 @@ const getProviderAnalyticsFromDB = async (providerId: string): Promise<IProvider
             }
         }
     ]);
+    const totalListing = await Service.countDocuments({
+        provider: new mongoose.Types.ObjectId(providerId)
+    });
 
     return {
         last7Days,
         conversionRate,
         totalViews: totalViews === 1 && totalViewsData.length === 0 ? 0 : totalViews,
         totalBookings,
+        totalListing,
         packagePerformance
     };
 };

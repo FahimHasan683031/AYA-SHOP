@@ -17,4 +17,5 @@ export type IService = {
         total: number;
         averageRating: number;
     };
+    isActive: boolean;
 };

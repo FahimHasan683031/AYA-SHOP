@@ -26,7 +26,7 @@ const getAllServices = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getSingleService = catchAsync(async (req: Request, res: Response) => {
-    const result = await ServiceService.getSingleServiceFromDB(req.params.id);
+    const result = await ServiceService.getSingleServiceFromDB(req.params.id, req.user);
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
