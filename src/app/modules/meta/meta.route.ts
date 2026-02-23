@@ -13,8 +13,14 @@ router.get(
 
 router.get(
     "/landing-stats",
-    auth(USER_ROLES.BUSINESS,USER_ROLES.CLIENT,USER_ROLES.ADMIN),
+    auth(USER_ROLES.BUSINESS, USER_ROLES.CLIENT, USER_ROLES.ADMIN),
     MetaController.getPublicStats
+);
+
+router.get(
+    "/admin-analytics",
+    auth(USER_ROLES.ADMIN),
+    MetaController.getAdminAnalytics
 );
 
 export const MetaRoutes = router;

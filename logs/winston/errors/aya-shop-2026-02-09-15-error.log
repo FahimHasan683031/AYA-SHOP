@@ -1,3 +1,0 @@
-{Mon Feb 09 2026 15:13:44} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - POST /api/v1/payment/stripe-connect 404 - 5.095 ms
-{Mon Feb 09 2026 15:14:05} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - POST /api/v1/payment/stripe-connect 500 - 1749.979 ms
-{Mon Feb 09 2026 15:32:11} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - POST /api/v1/payment/stripe-connect 500 - 5436.256 ms

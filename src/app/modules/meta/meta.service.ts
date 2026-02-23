@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { User } from "../user/user.model";
 import { BOOKING_STATUS } from "../../../enum/booking";
 import { USER_ROLES } from "../user/user.interface";
-import { IPublicStats, IProviderAnalytics } from "./meta.interface";
+import { IPublicStats, IProviderAnalytics, IAdminAnalytics } from "./meta.interface";
 import { Booking } from "../booking/booking.model";
 import { ViewHistory } from "../viewHistory/viewHistory.model";
 import { Service } from "../service/service.model";
@@ -100,6 +100,82 @@ const getProviderAnalyticsFromDB = async (providerId: string): Promise<IProvider
         packagePerformance
     };
 };
+const getAdminAnalyticsFromDB = async (): Promise<IAdminAnalytics> => {
+    // 1. User Stats
+    const totalUsers = await User.countDocuments({ role: USER_ROLES.CLIENT });
+    const activeUsers = await User.countDocuments({ role: USER_ROLES.CLIENT, status: "active" });
+
+    // 2. Business Stats
+    const totalBusinesses = await User.countDocuments({ role: USER_ROLES.BUSINESS });
+    const activeBusinesses = await User.countDocuments({
+        role: USER_ROLES.BUSINESS,
+        status: "active",
+        "business.businessStatus": "approved"
+    });
+
+    // 3. Service Stats
+    const totalServices = await Service.countDocuments();
+
+    // 4. Revenue Stats
+    const revenueData = await Booking.aggregate([
+        { $match: { paymentStatus: "paid" } },
+        {
+            $group: {
+                _id: null,
+                total: { $sum: "$totalAmount" },
+                thisMonth: {
+                    $sum: {
+                        $cond: [
+                            { $gte: ["$createdAt", dayjs().startOf('month').toDate()] },
+                            "$totalAmount",
+                            0
+                        ]
+                    }
+                }
+            }
+        }
+    ]);
+
+    // 5. Pending Approvals
+    const pendingApprovals = await User.countDocuments({
+        role: USER_ROLES.BUSINESS,
+        "business.businessStatus": { $in: ["pending", "resubmitted"] }
+    });
+
+    // 6. New Signups (Last 7 days)
+    const newSignupsLast7Days = await User.countDocuments({
+        role: USER_ROLES.CLIENT,
+        createdAt: { $gte: dayjs().subtract(7, 'day').toDate() }
+    });
+
+    // 7. Recent Users
+    const recentUsers = await User.find({ role: USER_ROLES.CLIENT })
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .select("fullName email image status createdAt");
+
+    // 8. Recent Transactions
+    const recentTransactions = await Booking.find()
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .populate("user", "fullName image")
+        .select("user totalAmount status createdAt service");
+
+    return {
+        userStats: { total: totalUsers, active: activeUsers },
+        businessStats: { total: totalBusinesses, active: activeBusinesses },
+        totalServices,
+        revenueStats: {
+            total: revenueData[0]?.total || 0,
+            thisMonth: revenueData[0]?.thisMonth || 0
+        },
+        pendingApprovals,
+        newSignupsLast7Days,
+        recentUsers,
+        recentTransactions
+    };
+};
+
 const getPublicStatsFromDB = async (): Promise<IPublicStats> => {
     const totalProviders = await User.countDocuments({ role: USER_ROLES.BUSINESS });
     const totalJobsDone = await Booking.countDocuments({ status: BOOKING_STATUS.COMPLETED });
@@ -114,5 +190,6 @@ const getPublicStatsFromDB = async (): Promise<IPublicStats> => {
 
 export const MetaService = {
     getProviderAnalyticsFromDB,
-    getPublicStatsFromDB
+    getPublicStatsFromDB,
+    getAdminAnalyticsFromDB
 };

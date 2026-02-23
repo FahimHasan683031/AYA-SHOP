@@ -27,7 +27,19 @@ const getPublicStats = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getAdminAnalytics = catchAsync(async (req: Request, res: Response) => {
+    const result = await MetaService.getAdminAnalyticsFromDB();
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Admin analytics retrieved successfully",
+        data: result,
+    });
+});
+
 export const MetaController = {
     getProviderAnalytics,
-    getPublicStats
+    getPublicStats,
+    getAdminAnalytics,
 };
