@@ -10,6 +10,7 @@ export type IProviderAnalytics = {
     totalViews: number;
     totalBookings: number;
     totalListing: number;
+    totalServices: number;
     packagePerformance: {
         name: string;
         bookings: number;
@@ -24,6 +25,10 @@ export type IPublicStats = {
 };
 
 export type IAdminAnalytics = {
+    totalUsers: number;
+    activeUsers: number;
+    totalBusinesses: number;
+    pendingBusiness: number;
     userStats: {
         total: number;
         active: number;

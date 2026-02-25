@@ -77,6 +77,16 @@ const getTopRatedServices = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const toggleServiceStatus = catchAsync(async (req: Request, res: Response) => {
+    const result = await ServiceService.toggleServiceStatusInDB(req.params.id, req.user);
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Service status toggled successfully",
+        data: result,
+    });
+});
+
 export const ServiceController = {
     createService,
     getAllServices,
@@ -85,4 +95,5 @@ export const ServiceController = {
     deleteService,
     getAvailableSlots,
     getTopRatedServices,
+    toggleServiceStatus,
 };

@@ -1,8 +1,0 @@
-{Mon Feb 09 2026 16:15:57} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - POST /api/v1/payment/payment/stripe-connect/status 404 - 2.746 ms
-{Mon Feb 09 2026 16:16:06} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - POST /api/v1/payment/stripe-connect/status 404 - 0.689 ms
-{Mon Feb 09 2026 16:16:08} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - POST /api/v1/payment/stripe-connect/status 404 - 0.296 ms
-{Mon Feb 09 2026 16:16:18} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - GET /api/v1/payment/stripe-connect/status 404 - 4.239 ms
-{Mon Feb 09 2026 16:20:53} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - POST /api/v1/service 400 - 8.880 ms
-{Mon Feb 09 2026 16:29:50} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - GET /webhook 400 - 40.784 ms
-{Mon Feb 09 2026 16:34:42} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - PATCH /api/v1/booking/6989b6547c7b58eb09ae138a/status 404 - 6.164 ms
-{Mon Feb 09 2026 16:34:56} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - PATCH /api/v1/booking/6989b6547c7b58eb09ae138a/status 403 - 7.854 ms

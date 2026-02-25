@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes'
 // create review
 const createReview = catchAsync(async (req, res) => {
   const payload = req.body
-  const result = await ReviewService.createReview(req.user,payload)
+  const result = await ReviewService.createReview(req.user, payload)
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
@@ -19,7 +19,7 @@ const createReview = catchAsync(async (req, res) => {
 // get all reviews
 const getAllReviews = catchAsync(async (req, res) => {
   const serviceId = req.params.serviceId
-  const result = await ReviewService.getAllReviews(serviceId,req.query)
+  const result = await ReviewService.getAllReviews(serviceId, req.query)
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
@@ -33,7 +33,7 @@ const getAllReviews = catchAsync(async (req, res) => {
 // delete review
 const deleteReview = catchAsync(async (req, res) => {
   const id = req.params.id
-  const result = await ReviewService.deleteReview(req.user,id)
+  const result = await ReviewService.deleteReview(req.user, id)
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
@@ -42,8 +42,20 @@ const deleteReview = catchAsync(async (req, res) => {
 })
 
 
+// get business reviews
+const getBusinessReviews = catchAsync(async (req, res) => {
+  const result = await ReviewService.getBusinessReviews(req.user.authId, req.query)
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Business reviews retrieved successfully',
+    data: result,
+  })
+})
+
 export const ReviewController = {
   createReview,
   getAllReviews,
+  getBusinessReviews,
   deleteReview,
 }

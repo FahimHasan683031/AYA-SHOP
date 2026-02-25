@@ -97,6 +97,7 @@ const getProviderAnalyticsFromDB = async (providerId: string): Promise<IProvider
         totalViews: totalViews === 1 && totalViewsData.length === 0 ? 0 : totalViews,
         totalBookings,
         totalListing,
+        totalServices: totalListing,
         packagePerformance
     };
 };
@@ -115,6 +116,15 @@ const getAdminAnalyticsFromDB = async (): Promise<IAdminAnalytics> => {
 
     // 3. Service Stats
     const totalServices = await Service.countDocuments();
+
+    // 4. Custom Card Metrics
+    const totalUsersCount = await User.countDocuments({ role: { $in: [USER_ROLES.CLIENT, USER_ROLES.BUSINESS] } });
+    const activeUsersCount = await User.countDocuments({ status: "active", role: { $in: [USER_ROLES.CLIENT, USER_ROLES.BUSINESS] } });
+    const totalBusinessesCount = await User.countDocuments({ role: USER_ROLES.BUSINESS });
+    const pendingBusinessCount = await User.countDocuments({
+        role: USER_ROLES.BUSINESS,
+        "business.businessStatus": { $in: ["pending", "resubmitted"] }
+    });
 
     // 4. Revenue Stats
     const revenueData = await Booking.aggregate([
@@ -162,6 +172,10 @@ const getAdminAnalyticsFromDB = async (): Promise<IAdminAnalytics> => {
         .select("user totalAmount status createdAt service");
 
     return {
+        totalUsers: totalUsersCount,
+        activeUsers: activeUsersCount,
+        totalBusinesses: totalBusinessesCount,
+        pendingBusiness: pendingBusinessCount,
         userStats: { total: totalUsers, active: activeUsers },
         businessStats: { total: totalBusinesses, active: activeBusinesses },
         totalServices,

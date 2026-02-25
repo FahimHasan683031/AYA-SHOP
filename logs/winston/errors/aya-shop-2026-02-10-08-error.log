@@ -1,5 +1,0 @@
-{Tue Feb 10 2026 08:33:11} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - POST /api/v1/booking 400 - 81.004 ms
-{Tue Feb 10 2026 08:39:40} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - GET /api/v1/booking/698a98f455ae0442b794498b 404 - 6.520 ms
-{Tue Feb 10 2026 08:42:13} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - PATCH /api/v1/booking/6989b6547c7b58eb09ae138a/status 403 - 23.426 ms
-{Tue Feb 10 2026 08:42:32} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - PATCH /api/v1/booking/6989b6547c7b58eb09ae138a/status 400 - 2.882 ms
-{Tue Feb 10 2026 08:43:39} [AYA SHOP 🐞] error: ::ffff:10.10.7.50 - PATCH /api/v1/booking/6989b6547c7b58eb09ae138a/status 403 - 2.676 ms

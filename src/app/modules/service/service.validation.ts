@@ -12,6 +12,7 @@ const createServiceSchema = z.object({
         features: z.array(z.string()).optional(),
         clientRequirements: z.string().min(1, "Client requirements are required"),
         cancellationPolicy: z.string().min(1, "Cancellation policy is required"),
+        isActive: z.boolean().optional(),
     }),
 });
 
@@ -27,6 +28,7 @@ const updateServiceSchema = z.object({
         features: z.array(z.string()).optional(),
         clientRequirements: z.string().optional(),
         cancellationPolicy: z.string().optional(),
+        isActive: z.boolean().optional(),
     }),
 });
 

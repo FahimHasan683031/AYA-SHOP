@@ -7,7 +7,12 @@ const ReviewSchema = new mongoose.Schema<IReview>({
     ref: 'Service',
     required: true,
   },
-  user: {
+  client: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  business: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,

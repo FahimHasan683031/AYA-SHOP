@@ -23,13 +23,17 @@ const createServiceToDB = async (providerId: string, payload: IService) => {
 };
 
 
-export const getAllServicesFromDB = async (user: any, query: Record<string, unknown>) => {
+const getAllServicesFromDB = async (user: any, query: Record<string, unknown>) => {
     const pipeline: any[] = [];
 
     // 1. Match services based on role
     let matchStage: any = {};
 
-    if (user.role === 'business' && user.authId) {
+    if (user.role === USER_ROLES.CLIENT) {
+        matchStage.isActive = true;
+    }
+
+    if (user.role === USER_ROLES.BUSINESS && user.authId) {
         matchStage.provider = new mongoose.Types.ObjectId(user.authId);
     }
 
@@ -93,7 +97,6 @@ export const getAllServicesFromDB = async (user: any, query: Record<string, unkn
         pipeline.push({ $match: locationMatch });
     }
 
-    console.log(pipeline)
 
     // 5. Apply search
     if (query.searchTerm) {
@@ -136,6 +139,7 @@ export const getAllServicesFromDB = async (user: any, query: Record<string, unkn
             bookingCount: 1,
             providerInfo: 1,
             categoryInfo: 1,
+            isActive: 1,
             createdAt: 1,
             updatedAt: 1
         }
@@ -188,6 +192,11 @@ const getSingleServiceFromDB = async (id: string, user: JwtPayload) => {
     ]);
     if (!result) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Service not found");
+    }
+
+    // Check if service is active - only for clients
+    if (user.role === USER_ROLES.CLIENT && !result.isActive) {
+        throw new ApiError(StatusCodes.FORBIDDEN, "This service is currently inactive");
     }
 
     // Tracking views - Only for clients
@@ -260,6 +269,10 @@ const getAvailableSlotsFromDB = async (serviceId: string, date: string) => {
     const service = await Service.findById(serviceId).populate("provider");
     if (!service) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Service not found");
+    }
+
+    if (!service.isActive) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Service is currently inactive");
     }
 
     const provider = service.provider as any;
@@ -338,6 +351,8 @@ const getTopRatedServicesFromDB = async (query: Record<string, unknown>) => {
     // Force sort by averageRating descending unless caller overrides
     const mergedQuery = { sort: "-rating.averageRating", ...query };
 
+    const queryWithFilter = { ...query, isActive: true };
+
     const serviceQuery = new QueryBuilder(
         Service.find()
             .populate({ path: "category", select: "name icon" })
@@ -353,10 +368,31 @@ const getTopRatedServicesFromDB = async (query: Record<string, unknown>) => {
         .paginate()
         .fields();
 
+    // Ensure we only get active services for top rated list
+    serviceQuery.modelQuery = serviceQuery.modelQuery.where({ isActive: true });
+
     const result = await serviceQuery.modelQuery;
     const meta = await serviceQuery.getPaginationInfo();
 
     return { meta, result };
+};
+
+const toggleServiceStatusInDB = async (id: string, user: JwtPayload) => {
+    const isExist = await Service.findById(id);
+    if (!isExist) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Service not found");
+    }
+
+    if (user.role === USER_ROLES.BUSINESS && isExist.provider.toString() !== user.authId) {
+        throw new ApiError(StatusCodes.FORBIDDEN, "You are not authorized to toggle this service");
+    }
+
+    const result = await Service.findByIdAndUpdate(
+        id,
+        { isActive: !isExist.isActive },
+        { new: true }
+    );
+    return result;
 };
 
 export const ServiceService = {
@@ -367,4 +403,5 @@ export const ServiceService = {
     deleteServiceFromDB,
     getAvailableSlotsFromDB,
     getTopRatedServicesFromDB,
+    toggleServiceStatusInDB,
 };

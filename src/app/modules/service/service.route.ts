@@ -47,6 +47,12 @@ router.patch(
     ServiceController.updateService
 );
 
+router.patch(
+    "/:id/toggle-status",
+    auth(USER_ROLES.BUSINESS, USER_ROLES.ADMIN),
+    ServiceController.toggleServiceStatus
+);
+
 router.delete("/:id",
     auth(USER_ROLES.BUSINESS, USER_ROLES.ADMIN),
     businessAuth,

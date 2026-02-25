@@ -13,12 +13,23 @@ import { User } from '../user/user.model'
 
 // create review
 const createReview = async (user: JwtPayload, payload: IReview) => {
-  payload.user = user.authId
+  payload.client = user.authId
 
   // Validate service exists
   const serviceExists = await Service.findById(payload.service)
   if (!serviceExists) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'Service not found')
+  }
+
+  payload.business = serviceExists.provider
+
+  const isAlreadyReviewed = await Review.findOne({
+    client: user.authId,
+    service: payload.service,
+  })
+
+  if (isAlreadyReviewed) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'You have already reviewed this service')
   }
 
   const session = await mongoose.startSession()
@@ -83,7 +94,7 @@ const createReview = async (user: JwtPayload, payload: IReview) => {
 
 // get all reviews
 const getAllReviews = async (serviceId: string, query: Record<string, unknown>) => {
-  const reviewQueryBuilder = new QueryBuilder(Review.find({ service: serviceId }).populate('user', '_id fullName image'), query)
+  const reviewQueryBuilder = new QueryBuilder(Review.find({ service: serviceId }).populate('client', '_id fullName image'), query)
     .filter()
     .sort()
     .fields()
@@ -113,8 +124,29 @@ const deleteReview = async (user: JwtPayload, id: string) => {
   return result
 }
 
+// get business reviews
+const getBusinessReviews = async (businessId: string, query: Record<string, unknown>) => {
+  const reviewQueryBuilder = new QueryBuilder(
+    Review.find({ business: businessId }).populate('client', '_id fullName image').populate('service', '_id name photos'),
+    query
+  )
+    .filter()
+    .sort()
+    .fields()
+    .paginate()
+
+  const reviews = await reviewQueryBuilder.modelQuery
+  const paginationInfo = await reviewQueryBuilder.getPaginationInfo()
+
+  return {
+    reviews,
+    meta: paginationInfo,
+  }
+}
+
 export const ReviewService = {
   createReview,
   getAllReviews,
+  getBusinessReviews,
   deleteReview,
 }
