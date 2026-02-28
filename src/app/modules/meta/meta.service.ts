@@ -53,7 +53,7 @@ const getProviderAnalyticsFromDB = async (providerId: string): Promise<IProvider
         { $group: { _id: null, total: { $sum: "$count" } } }
     ]);
 
-    const totalViews = totalViewsData[0]?.total || 1; // Avoid division by zero
+    const totalViews = totalViewsData[0]?.total || 1; 
     const totalBookings = totalStats[0]?.totalBookings || 0;
     const conversionRate = parseFloat(((totalBookings / totalViews) * 100).toFixed(1));
 
@@ -71,7 +71,7 @@ const getProviderAnalyticsFromDB = async (providerId: string): Promise<IProvider
         { $limit: 3 },
         {
             $lookup: {
-                from: "services", // collection name for Service
+                from: "services",
                 localField: "_id",
                 foreignField: "_id",
                 as: "serviceDetails"
@@ -97,10 +97,11 @@ const getProviderAnalyticsFromDB = async (providerId: string): Promise<IProvider
         totalViews: totalViews === 1 && totalViewsData.length === 0 ? 0 : totalViews,
         totalBookings,
         totalListing,
-        totalServices: totalListing,
+        totalRevenue: totalStats[0]?.totalRevenue || 0,
         packagePerformance
     };
 };
+
 const getAdminAnalyticsFromDB = async (): Promise<IAdminAnalytics> => {
     // 1. User Stats
     const totalUsers = await User.countDocuments({ role: USER_ROLES.CLIENT });

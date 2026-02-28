@@ -239,29 +239,11 @@ const getSingleServiceFromDB = async (id: string, user: JwtPayload) => {
             statistics: {
                 isActive: result.isActive,
                 totalViews: totalViews[0]?.total || 0,
-                bookings: bookingsData[0]?.count || 0,
                 revenue: bookingsData[0]?.revenue || 0
             }
         };
     }
 
-    return result;
-};
-
-const updateServiceInDB = async (id: string, providerId: string, payload: Partial<IService>) => {
-    const isExist = await Service.findById(id);
-    if (!isExist) {
-        throw new ApiError(StatusCodes.NOT_FOUND, "Service not found");
-    }
-
-    if (isExist.provider.toString() !== providerId) {
-        throw new ApiError(StatusCodes.FORBIDDEN, "You are not authorized to update this service");
-    }
-
-    const result = await Service.findByIdAndUpdate(id, payload, {
-        new: true,
-        runValidators: true,
-    });
     return result;
 };
 
@@ -333,22 +315,7 @@ const getAvailableSlotsFromDB = async (serviceId: string, date: string) => {
     return slots;
 };
 
-const deleteServiceFromDB = async (user: JwtPayload, id: string) => {
-    const isExist = await Service.findById(id);
-    if (!isExist) {
-        throw new ApiError(StatusCodes.NOT_FOUND, "Service not found");
-    }
-
-    if (user.role === USER_ROLES.BUSINESS && isExist.provider.toString() !== user.authId) {
-        throw new ApiError(StatusCodes.FORBIDDEN, "You are not authorized to delete this service");
-    }
-
-    const result = await Service.findByIdAndDelete(id);
-    return result;
-};
-
 const getTopRatedServicesFromDB = async (query: Record<string, unknown>) => {
-    // Force sort by averageRating descending unless caller overrides
     const mergedQuery = { sort: "-rating.averageRating", ...query };
 
     const queryWithFilter = { ...query, isActive: true };
@@ -377,6 +344,24 @@ const getTopRatedServicesFromDB = async (query: Record<string, unknown>) => {
     return { meta, result };
 };
 
+
+const updateServiceInDB = async (id: string, providerId: string, payload: Partial<IService>) => {
+    const isExist = await Service.findById(id);
+    if (!isExist) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Service not found");
+    }
+
+    if (isExist.provider.toString() !== providerId) {
+        throw new ApiError(StatusCodes.FORBIDDEN, "You are not authorized to update this service");
+    }
+
+    const result = await Service.findByIdAndUpdate(id, payload, {
+        new: true,
+        runValidators: true,
+    });
+    return result;
+};
+
 const toggleServiceStatusInDB = async (id: string, user: JwtPayload) => {
     const isExist = await Service.findById(id);
     if (!isExist) {
@@ -394,6 +379,23 @@ const toggleServiceStatusInDB = async (id: string, user: JwtPayload) => {
     );
     return result;
 };
+
+
+const deleteServiceFromDB = async (user: JwtPayload, id: string) => {
+    const isExist = await Service.findById(id);
+    if (!isExist) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Service not found");
+    }
+
+    if (user.role === USER_ROLES.BUSINESS && isExist.provider.toString() !== user.authId) {
+        throw new ApiError(StatusCodes.FORBIDDEN, "You are not authorized to delete this service");
+    }
+
+    const result = await Service.findByIdAndDelete(id);
+    return result;
+};
+
+
 
 export const ServiceService = {
     createServiceToDB,

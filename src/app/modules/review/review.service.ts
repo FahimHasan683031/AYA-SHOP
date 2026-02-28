@@ -117,7 +117,7 @@ const deleteReview = async (user: JwtPayload, id: string) => {
   if (!isExist) {
     throw new Error('Review not found')
   }
-  if (user.role !== USER_ROLES.ADMIN && isExist.user !== user.authId) {
+  if (user.role !== USER_ROLES.ADMIN && isExist.client !== user.authId) {
     throw new Error('You are not authorized to delete this review')
   }
   const result = await Review.findByIdAndDelete(id)

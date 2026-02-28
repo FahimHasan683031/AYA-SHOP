@@ -1,5 +1,0 @@
-{Wed Feb 25 2026 16:11:08} [AYA SHOP 🚀] info: [32m🚀 Database connected successfully[39m
-{Wed Feb 25 2026 16:11:08} [AYA SHOP 🚀] info: [32m🍁 Server connected successfully[39m
-{Wed Feb 25 2026 16:11:08} [AYA SHOP 🚀] info: [33m♻️  Application listening on port:5004[39m
-{Wed Feb 25 2026 16:11:08} [AYA SHOP 🚀] info: ℹ Admin user already exists
-{Wed Feb 25 2026 16:19:16} [AYA SHOP 🚀] info: ::ffff:10.10.7.50 - GET /api/v1/user?role=business 200 - 42.424 ms

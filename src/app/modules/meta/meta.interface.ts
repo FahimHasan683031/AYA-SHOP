@@ -10,7 +10,7 @@ export type IProviderAnalytics = {
     totalViews: number;
     totalBookings: number;
     totalListing: number;
-    totalServices: number;
+    totalRevenue: number;
     packagePerformance: {
         name: string;
         bookings: number;
